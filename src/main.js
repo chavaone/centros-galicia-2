@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
+//Setup i18n
 Vue.use(VueI18n)
+const i18n = new VueI18n({
+  locale: 'gl'
+})
+
 import './assets/scripts/imports.js'
 
 import App from './App.vue'
 
 new Vue({
-  el: '#app',
+  i18n,
   render: h => h(App)
-})
+}).$mount('#app')
