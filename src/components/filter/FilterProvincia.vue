@@ -1,14 +1,24 @@
 <template lang="html">
   <div class="filter">
     <h5>{{ $t('provinces') }}</h5>
-    <div class="form-check" v-for="(provincia, key) in provincias">
-      <input type="checkbox" class="form-check-input" :value="provincia" :id="key + '-checkbox'" v-model="checkedProvincias" @change="">
-      <label class="form-check-label" :for="key + '-checkbox'">{{provincia}}</label>
+    <div  class="form-check"
+          v-for="(provincia, key) in provincias">
+      <input  type="checkbox"
+              class="form-check-input"
+              :value="provincia" :id="key + '-checkbox'"
+              v-model="checkedProvincias"
+              @change="filterChanged()">
+      <label class="form-check-label"
+      :for="key + '-checkbox'">
+        {{provincia}}
+      </label>
     </div>
   </div>
 </template>
 
 <script>
+import { eventBus } from '../../main.js';
+
 export default {
   data : function() {
     return {
@@ -28,14 +38,16 @@ export default {
   },
   methods: {
     filter(centro) {
-      return centro.provincia in this.checkedProvincias;
+      return  this.checkedProvincias.indexOf(centro.provincia) > -1;
+    },
+    filterChanged() {
+      eventBus.$emit('filterChanged');
     }
   }
 }
 </script>
 
 <style lang="scss">
-
 </style>
 
 <i18n>
