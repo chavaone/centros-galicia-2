@@ -1,5 +1,15 @@
 <template>
   <div id="app" class="container">
+    <header>
+      <AQDMainHeaderBar></AQDMainHeaderBar>
+      <nav class="barra">
+        <div class="info">
+          <span>{{ $t('number-centers', [activeCenters.length]) }}</span>
+        </div>
+        <!-- Component Sort selector -->
+        <!-- Component button sort filter -->
+      </nav>
+    </header>
     <main>
       <aside class="collapse">
         <form>
@@ -26,6 +36,7 @@ import { eventBus } from './main.js'
 
 //Components
 import Center from './components/Center.vue'
+import MainHeaderBar from './components/MainHeaderBar.vue'
 import FilterProvincia from './components/filter/FilterProvincia.vue'
 import listaCentros from './assets/scripts/db/centros.js'
 
@@ -41,7 +52,8 @@ export default {
   },
   components: {
     'AQDCenter': Center,
-    'AQDFilterProvincia': FilterProvincia
+    'AQDFilterProvincia': FilterProvincia,
+    'AQDMainHeaderBar': MainHeaderBar
   },
   methods: {
     loadCenters() {
@@ -54,37 +66,68 @@ export default {
   },
   created() {
     eventBus.$on('filterChanged', this.loadCenters);
+    this.loadCenters();
   }
 }
 </script>
 
 <style lang="scss">
-@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import "./assets/styles/variables.scss";
+@import "~bootstrap/scss/bootstrap.scss";
+@import "./assets/styles/mixins.scss";
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+    background-color: $background-color;
 }
 
-h1, h2 {
-  font-weight: normal;
+nav.barra {
+  @include make-box;
+  @include make-row;
+  margin: 0.7em 0;
+  padding: 0.35em 0;
+
+  .info {
+    @include make-col-ready;
+    @include make-col(6);
+    margin-top:7px;
+    font-size:0.75em;
+  }
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
+main {
+  @include make-row();
+  display: flex !important;
 
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+  aside {
+    @include make-col-ready();
+    @include make-col(12);
+    margin-bottom: 1em;
 
-a {
-  color: #42b983;
+    @include media-breakpoint-up(sm) {
+    @include make-col(3);
+            display: inline-block !important;
+    }
+  }
+
+  aside>form {
+      @include make-box;
+  }
+
+  section {
+      @include make-col-ready();
+      @include make-col(12);
+
+      @include media-breakpoint-up(sm) {
+          @include make-col(9);
+      }
+    }
 }
 </style>
+
+<i18n>
+  {
+    "gl": {
+      "number-centers": "Seleccionados un total de {0} centros"
+    }
+  }
+</i18n>
