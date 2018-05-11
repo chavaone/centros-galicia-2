@@ -1,35 +1,59 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div id="app" class="container">
+    <main>
+      <aside class="collapse">
+        <form>
+          <div id="sort-list">
+
+          </div>
+          <div id="filter-list">
+            <component v-for="filter in activeFilters" :is="filter" :ref="filter" :key="filter"></component>
+          </div>
+        </form>
+      </aside>
+      <section id="lista-centros">
+        <AQDCenter v-for="centro in activeCenters" :centro="centro" :key="centro.cod"></AQDCenter>
+      </section>
+    </main>
+    <footer>
+
+    </footer>
   </div>
 </template>
 
 <script>
+import { eventBus } from './main.js'
+
+//Components
 import Center from './components/Center.vue'
+import FilterProvincia from './components/filter/FilterProvincia.vue'
+import listaCentros from './assets/scripts/db/centros.js'
+
 export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      activeFilters: [
+        'AQDFilterProvincia'
+      ],
+      activeCenters: []
     }
   },
   components: {
-    'AQDCenter': Center
+    'AQDCenter': Center,
+    'AQDFilterProvincia': FilterProvincia
+  },
+  methods: {
+    loadCenters() {
+      var centros = listaCentros;
+      for(var i = 0; i < this.activeFilters.length; i++) {
+        centros = centros.filter(this.$refs[this.activeFilters[i]][0].filter)
+      }
+      this.activeCenters =  centros;
+    }
+  },
+  created() {
+    eventBus.$on('filterChanged', this.loadCenters);
   }
 }
 </script>
