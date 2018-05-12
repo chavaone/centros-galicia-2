@@ -49,6 +49,9 @@ import ModalChangePosition from './components/ModalChangePosition.vue'
 import FilterProvincia from './components/filter/FilterProvincia.vue'
 import listaCentros from './assets/scripts/db/centros.js'
 
+window.Sortable = require('sortablejs');
+
+
 export default {
   name: 'app',
   data () {
@@ -78,6 +81,7 @@ export default {
         centros = centros.filter(this.$refs[this.activeFilters[i]][0].filter)
       }
       this.activeCenters =  centros;
+      this.doCentersSortable();
     },
     getLocation() {
       console.log("getLocation");
@@ -102,6 +106,15 @@ export default {
       OSMFunctions.updateOSMDistances(listaCentros, position, function () {
         self.loadedDistances = true;
       });
+    },
+    doCentersSortable() {
+      var tabla = document.getElementById("lista-centros"),
+          sortable = Sortable.create(tabla, {
+            handle: 'header',
+            ghostClass: 'ghost-sortable',
+            animation: 100,
+            delay: 20,
+          });
     }
   },
   created() {
