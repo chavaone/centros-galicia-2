@@ -1,12 +1,3 @@
-<i18n>
-  {
-    "gl": {
-      "info-travel": "Info Viaxe:",
-      "num-linhas": "Liñas"
-    }
-  }
-</i18n>
-
 <template lang="html">
   <article :data-cod="centro.cod">
         <div class="info">
@@ -16,8 +7,8 @@
             </header>
             <div class="travel-info">
                 <span class="title">{{ $t('info-travel') }}</span>
-                <span class="distancia"><i class="fas fa-route"></i></span>
-                <span class="tiempo"><i class="fas fa-clock"></i></span>
+                <span class="distancia"><i class="fas fa-route"></i>{{centro.osm.distancia | prettyDistance}}</span>
+                <span class="tiempo"><i class="fas fa-clock"></i>{{centro.osm.tiempo | prettyTime}}</span>
             </div>
         </div>
         <div class="botones">
@@ -40,6 +31,34 @@
 export default {
   props: {
     centro: Object
+  },
+  filters: {
+    prettyDistance(distance) {
+      if (distance < 1) {
+          return (Math.floor(distance * 1000)).toString() + " m.";
+      }
+      return Math.floor(distance).toString() + " km.";
+    },
+    prettyTime (seconds) {
+      var ret = "",
+          hours = Math.floor(seconds / 3600),
+          minutes = Math.floor((seconds % 3600) / 60),
+          secs = (seconds % 3600) % 60;
+
+          if (hours) {
+              ret = hours.toString() + "h. ";
+          }
+
+          if (minutes) {
+              ret = ret + minutes.toString() + "min. ";
+          }
+
+          if (seconds && ! ret) {
+              ret = ret + secs.toString() + "s. ";
+          }
+
+      return ret;
+    }
   },
   methods: {
     clipboard(){
@@ -155,3 +174,12 @@ article {
         }
 }
 </style>
+
+<i18n>
+  {
+    "gl": {
+      "info-travel": "Info Viaxe:",
+      "num-linhas": "Liñas"
+    }
+  }
+</i18n>
