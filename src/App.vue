@@ -1,5 +1,11 @@
 <template>
   <div id="app" class="container">
+    <div class="alert alert-primary" role="alert" v-if="! loadedDistances">
+      {{ $t('loading-distances') }}
+    </div>
+    <div class="alert alert-primary" role="alert" v-if="! loadedTimes">
+      {{ $t('loading-times') }}
+    </div>
     <header>
       <AQDMainHeaderBar></AQDMainHeaderBar>
       <nav class="barra">
@@ -28,15 +34,18 @@
     <footer>
 
     </footer>
+    <AQDModalChangePosition :position="position"></AQDModalChangePosition>
   </div>
 </template>
 
 <script>
 import { eventBus } from './main.js'
+import OSMFunctions from './assets/scripts/OSMFunctions.js'
 
 //Components
 import Center from './components/Center.vue'
 import MainHeaderBar from './components/MainHeaderBar.vue'
+import ModalChangePosition from './components/ModalChangePosition.vue'
 import FilterProvincia from './components/filter/FilterProvincia.vue'
 import listaCentros from './assets/scripts/db/centros.js'
 
@@ -47,13 +56,20 @@ export default {
       activeFilters: [
         'AQDFilterProvincia'
       ],
-      activeCenters: []
+      activeCenters: [],
+      position: {
+        'lat': 43,
+        'lon': -8
+      },
+      loadedDistances: false,
+      loadedTimes: false
     }
   },
   components: {
     'AQDCenter': Center,
     'AQDFilterProvincia': FilterProvincia,
-    'AQDMainHeaderBar': MainHeaderBar
+    'AQDMainHeaderBar': MainHeaderBar,
+    'AQDModalChangePosition': ModalChangePosition
   },
   methods: {
     loadCenters() {
@@ -62,72 +78,100 @@ export default {
         centros = centros.filter(this.$refs[this.activeFilters[i]][0].filter)
       }
       this.activeCenters =  centros;
+    },
+    getLocation() {
+      console.log("getLocation");
+      var self = this;
+      navigator.geolocation.getCurrentPosition (function(pos) {
+            self.position = {
+                lat: pos.coords.latitude,
+                lon: pos.coords.longitude
+            };
+            eventBus.$emit('locationChanged', self.position);
+        });
+    },
+    updateOSMData(position) {
+      this.loadedTimes = false;
+      this.loadedDistances = false;
+      var self = this;
+
+      OSMFunctions.updateOSMTimes(listaCentros, position, function () {
+        self.loadedTimes = true;
+      });
+
+      OSMFunctions.updateOSMDistances(listaCentros, position, function () {
+        self.loadedDistances = true;
+      });
     }
   },
   created() {
     eventBus.$on('filterChanged', this.loadCenters);
-    this.loadCenters();
+    eventBus.$on('locationChanged', this.updateOSMData)
+    //this.loadCenters();
+    this.getLocation();
   }
 }
 </script>
 
 <style lang="scss">
-@import "./assets/styles/variables.scss";
-@import "~bootstrap/scss/bootstrap.scss";
-@import "./assets/styles/mixins.scss";
+  @import "./assets/styles/variables.scss";
+  @import "~bootstrap/scss/bootstrap.scss";
+  @import "./assets/styles/mixins.scss";
 
-body {
-    background-color: $background-color;
-}
-
-nav.barra {
-  @include make-box;
-  @include make-row;
-  margin: 0.7em 0;
-  padding: 0.35em 0;
-
-  .info {
-    @include make-col-ready;
-    @include make-col(6);
-    margin-top:7px;
-    font-size:0.75em;
+  body {
+      background-color: $background-color;
   }
-}
 
-main {
-  @include make-row();
-  display: flex !important;
+  nav.barra {
+    @include make-box;
+    @include make-row;
+    margin: 0.7em 0;
+    padding: 0.35em 0;
 
-  aside {
-    @include make-col-ready();
-    @include make-col(12);
-    margin-bottom: 1em;
-
-    @include media-breakpoint-up(sm) {
-    @include make-col(3);
-            display: inline-block !important;
+    .info {
+      @include make-col-ready;
+      @include make-col(6);
+      margin-top:7px;
+      font-size:0.75em;
     }
   }
 
-  aside>form {
-      @include make-box;
-  }
+  main {
+    @include make-row();
+    display: flex !important;
 
-  section {
+    aside {
       @include make-col-ready();
       @include make-col(12);
+      margin-bottom: 1em;
 
       @include media-breakpoint-up(sm) {
-          @include make-col(9);
+      @include make-col(3);
+              display: inline-block !important;
       }
     }
-}
+
+    aside>form {
+        @include make-box;
+    }
+
+    section {
+        @include make-col-ready();
+        @include make-col(12);
+
+        @include media-breakpoint-up(sm) {
+            @include make-col(9);
+        }
+      }
+  }
 </style>
 
 <i18n>
   {
     "gl": {
-      "number-centers": "Seleccionados un total de {0} centros"
+      "number-centers": "Seleccionados un total de {0} centros",
+      "loading-times": "Estamos cargando os tempos dende a súa localización a cada centro. Espere por favor.",
+      "loading-distances": "Estamos cargando as distancias dende a súa localización a cada centro. Espere por favor."
     }
   }
 </i18n>

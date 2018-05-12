@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse" id="menuprincipal">
               <ul class="navbar-nav justify-content-end ml-auto">
                   <li class="nav-item">
-                      <a class="nav-link" href="#" data-toggle="modal" data-target="#cambiarLocalizacionModal">
+                      <a class="nav-link" href="#" data-toggle="modal" data-target="#cambiarPosicionModal">
                         {{ $t('change-coords') }}
                       </a>
                   </li>
@@ -33,6 +33,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 </style>
 
 <i18n>
