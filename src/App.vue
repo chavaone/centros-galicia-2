@@ -23,9 +23,9 @@
           <AQDFilterList ref="filterList"></AQDFilterList>
         </form>
       </aside>
-      <section id="lista-centros">
+      <AQDDraggable v-model="activeCenters">
         <AQDCenter v-for="centro in activeCenters" :centro="centro" :key="centro.cod"></AQDCenter>
-      </section>
+      </AQDDraggable>
     </main>
     <footer>
 
@@ -39,13 +39,11 @@ import listaCentros from './assets/scripts/db/centros.js'
 import OSMFunctions from './assets/scripts/OSMFunctions.js'
 
 //Components
+import Draggable from 'vuedraggable'
 import Center from './components/Center.vue'
 import MainHeaderBar from './components/MainHeaderBar.vue'
 import FilterList from './components/filter/FilterList.vue'
 import SortList from './components/sort/SortList.vue'
-
-window.Sortable = require('sortablejs');
-
 
 export default {
   name: 'app',
@@ -62,6 +60,7 @@ export default {
     }
   },
   components: {
+    'AQDDraggable': Draggable,
     'AQDCenter': Center,
     'AQDFilterList': FilterList,
     'AQDMainHeaderBar': MainHeaderBar,
@@ -75,7 +74,6 @@ export default {
       } else {
         this.activeCenters = this.$refs[origin].sort(this.activeCenters);
       }
-      this.doCentersSortable();
     },
     getLocation() {
       console.log("getLocation");
@@ -100,15 +98,6 @@ export default {
       OSMFunctions.updateOSMDistances(listaCentros, position, function () {
         self.loadedDistances = true;
       });
-    },
-    doCentersSortable() {
-      var tabla = document.getElementById("lista-centros"),
-          sortable = Sortable.create(tabla, {
-            handle: 'header',
-            ghostClass: 'ghost-sortable',
-            animation: 100,
-            delay: 20,
-          });
     }
   },
   created() {
@@ -163,7 +152,7 @@ export default {
         @include make-box;
     }
 
-    section {
+    &>div {
         @include make-col-ready();
         @include make-col(12);
 
