@@ -7,7 +7,7 @@
       {{ $t('loading-times') }}
     </div>
     <header>
-      <AQDMainHeaderBar></AQDMainHeaderBar>
+      <AQDMainHeaderBar :position="position" :activeCenters="activeCenters" :language="currentLanguage"></AQDMainHeaderBar>
       <nav class="barra">
         <div class="info">
           <span>{{ $t('number-centers', [activeCenters.length]) }}</span>
@@ -30,7 +30,6 @@
     <footer>
 
     </footer>
-    <AQDModalChangePosition :position="position"></AQDModalChangePosition>
   </div>
 </template>
 
@@ -41,7 +40,6 @@ import OSMFunctions from './assets/scripts/OSMFunctions.js'
 //Components
 import Center from './components/Center.vue'
 import MainHeaderBar from './components/MainHeaderBar.vue'
-import ModalChangePosition from './components/ModalChangePosition.vue'
 import listaCentros from './assets/scripts/db/centros.js'
 import FilterList from './components/filter/FilterList.vue'
 import SortList from './components/sort/SortList.vue'
