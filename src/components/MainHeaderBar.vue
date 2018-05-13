@@ -15,7 +15,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#exportarModal">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#cambiarExportarCentros">
                           {{ $t('export-center') }}
                         </a>
                     </li>
@@ -27,12 +27,14 @@
               </div>
     </nav>
     <AQDModalChangePosition :position="position"></AQDModalChangePosition>
-    <!--<AQDModalExportCenters :centers="activeCenters"></AQDModalExportCenters>-->
+    <AQDModalExportCenters :centers="activeCenters"></AQDModalExportCenters>
   </div>
 </template>
 
 <script>
 import ModalChangePosition from './ModalChangePosition.vue'
+import ModalExportCenters from './ModalExportCenters.vue'
+
 
 export default {
   props: {
@@ -41,7 +43,8 @@ export default {
     language: String
   },
   components: {
-    'AQDModalChangePosition': ModalChangePosition
+    'AQDModalChangePosition': ModalChangePosition,
+    'AQDModalExportCenters': ModalExportCenters
   }
 }
 </script>
