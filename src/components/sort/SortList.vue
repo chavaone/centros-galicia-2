@@ -1,6 +1,6 @@
 <template lang="html">
   <div id="sort-list">
-    <h4>{{ $t('sort') }}</h4>
+    <h4 v-if="showTitle">{{ $t('sort') }}</h4>
     <select v-model="selectedMethod" @change="changeSort">
       <option v-for="(method, key) in availableMethods" :value="method">{{method.name}}</option>
     </select>
@@ -26,9 +26,18 @@ export default {
         distance: {
           name: this.$i18n.t('sort-by-distance'),
           fun: SortMethods.sortByDistance
-        },
+        }
       },
       selectedMethod: null
+    }
+  },
+  props: {
+    showTitle: {
+      type: Boolean,
+      default: true
+    },
+    sortRef: {
+      type: String
     }
   },
   methods: {
@@ -37,7 +46,10 @@ export default {
       return centros.sort(this.selectedMethod.fun);
     },
     changeSort(){
-      eventBus.$emit('filterOrSortChanged');
+      eventBus.$emit('filterOrSortChanged', this.sortRef);
+    },
+    setCustomSort() {
+      this.selectedMethod = customSortMethod;
     }
   }
 }
@@ -52,7 +64,8 @@ export default {
         "sort": "Ordenar",
         "sort-by-name": "Ordenar por nome",
         "sort-by-time": "Ordenar por tempo",
-        "sort-by-distance": "Ordenar por distancia"
+        "sort-by-distance": "Ordenar por distancia",
+        "sort-by-custom": "Ordenación manual"
       }
   }
 </i18n>

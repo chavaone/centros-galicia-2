@@ -12,14 +12,14 @@
         <div class="info">
           <span>{{ $t('number-centers', [activeCenters.length]) }}</span>
         </div>
-        <!-- Component Sort selector -->
+        <AQDSortControl ref="sortBar" :sortRef="'sortBar'" :showTitle="false"></AQDSortControl>
         <!-- Component button sort filter -->
       </nav>
     </header>
     <main>
       <aside class="collapse">
         <form>
-          <AQDSortList ref="sortList"></AQDSortList>
+          <AQDSortControl ref="sortAside" :sortRef="'sortAside'"></AQDSortControl>
           <AQDFilterList ref="filterList"></AQDFilterList>
         </form>
       </aside>
@@ -60,20 +60,23 @@ export default {
         'lon': -8
       },
       loadedDistances: false,
-      loadedTimes: false
+      loadedTimes: false,
     }
   },
   components: {
     'AQDCenter': Center,
     'AQDFilterList': FilterList,
     'AQDMainHeaderBar': MainHeaderBar,
-    'AQDSortList': SortList
+    'AQDSortControl': SortList
   },
   methods: {
-    loadCenters() {
+    loadCenters(origin) {
       var centros = listaCentros;
-      this.activeCenters = this.$refs.filterList.filter(centros);
-      this.activeCenters = this.$refs.sortList.sort(this.activeCenters);
+      if (! origin.startsWith("sort")) {
+        this.activeCenters = this.$refs.filterList.filter(centros);
+      } else {
+        this.activeCenters = this.$refs[origin].sort(this.activeCenters);
+      }
       this.doCentersSortable();
     },
     getLocation() {

@@ -41,7 +41,7 @@ export default {
       return  this.checkedProvincias.indexOf(centro.provincia) > -1;
     },
     filterChanged() {
-      eventBus.$emit('filterOrSortChanged');
+      eventBus.$emit('filterOrSortChanged', 'filterProvincia');
     }
   }
 }
