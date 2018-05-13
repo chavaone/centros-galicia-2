@@ -35,12 +35,12 @@
 
 <script>
 import { eventBus } from './main.js'
+import listaCentros from './assets/scripts/db/centros.js'
 import OSMFunctions from './assets/scripts/OSMFunctions.js'
 
 //Components
 import Center from './components/Center.vue'
 import MainHeaderBar from './components/MainHeaderBar.vue'
-import listaCentros from './assets/scripts/db/centros.js'
 import FilterList from './components/filter/FilterList.vue'
 import SortList from './components/sort/SortList.vue'
 
@@ -69,9 +69,9 @@ export default {
   },
   methods: {
     loadCenters(origin) {
-      var centros = listaCentros;
+      this.activeCenters = listaCentros;
       if (! origin.startsWith("sort")) {
-        this.activeCenters = this.$refs.filterList.filter(centros);
+        this.activeCenters = this.$refs.filterList.filter(this.activeCenters);
       } else {
         this.activeCenters = this.$refs[origin].sort(this.activeCenters);
       }
