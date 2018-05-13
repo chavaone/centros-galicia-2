@@ -19,9 +19,7 @@
     <main>
       <aside class="collapse">
         <form>
-          <div id="sort-list">
-
-          </div>
+          <AQDSortList ref="sortList"></AQDSortList>
           <AQDFilterList ref="filterList"></AQDFilterList>
         </form>
       </aside>
@@ -46,6 +44,7 @@ import MainHeaderBar from './components/MainHeaderBar.vue'
 import ModalChangePosition from './components/ModalChangePosition.vue'
 import listaCentros from './assets/scripts/db/centros.js'
 import FilterList from './components/filter/FilterList.vue'
+import SortList from './components/sort/SortList.vue'
 
 window.Sortable = require('sortablejs');
 
@@ -68,12 +67,13 @@ export default {
     'AQDCenter': Center,
     'AQDFilterList': FilterList,
     'AQDMainHeaderBar': MainHeaderBar,
-    'AQDModalChangePosition': ModalChangePosition
+    'AQDSortList': SortList
   },
   methods: {
     loadCenters() {
       var centros = listaCentros;
       this.activeCenters = this.$refs.filterList.filter(centros);
+      this.activeCenters = this.$refs.sortList.sort(this.activeCenters);
       this.doCentersSortable();
     },
     getLocation() {
