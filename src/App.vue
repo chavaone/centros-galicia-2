@@ -13,11 +13,11 @@
           <span>{{ $t('number-centers', [activeCenters.length]) }}</span>
         </div>
         <AQDSortControl ref="sortBar" :sortRef="'sortBar'" :showTitle="false"></AQDSortControl>
-        <!-- Component button sort filter -->
+        <a class="btn btn-primary" data-toggle="collapse" href="#asideSortFilter" role="button" aria-expanded="false" aria-controls="asideSortFilter">Ordenar y Filtrar</a>
       </nav>
     </header>
     <main>
-      <aside class="collapse">
+      <aside class="collapse" id="asideSortFilter">
         <form>
           <AQDSortControl ref="sortAside" :sortRef="'sortAside'"></AQDSortControl>
           <AQDFilterList ref="filterList"></AQDFilterList>
