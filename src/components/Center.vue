@@ -13,7 +13,12 @@
         </div>
         <div class="botones">
             <div class="btn-group pull-right btn-group-vertical" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-sm btn-primary" @click="clipboard()"><i class="fa fa-clipboard"></i></button>
+              <button type="button"
+                      class="btn btn-sm btn-primary"
+                      v-clipboard:copy="centro.cod"
+                      v-clipboard:success="onCopy">
+                      <i class="fa fa-clipboard"></i>
+              </button>
               <button type="button" class="btn btn-sm btn-primary" @click="trash()"><i class="fa fa-trash"></i></button>
               <button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" :data-target="'#info-cen-' + centro.cod" aria-expanded="false" :aria-controls="'info-cen-' + centro.cod"><i class="fa fa-info"></i></button>
             </div>
@@ -61,7 +66,7 @@ export default {
     }
   },
   methods: {
-    clipboard(){
+    onCopy(){
       console.log(this.centro.cod);
     },
     trash(){
