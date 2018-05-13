@@ -22,9 +22,7 @@
           <div id="sort-list">
 
           </div>
-          <div id="filter-list">
-            <component v-for="filter in activeFilters" :is="filter" :ref="filter" :key="filter"></component>
-          </div>
+          <AQDFilterList ref="filterList"></AQDFilterList>
         </form>
       </aside>
       <section id="lista-centros">
@@ -46,8 +44,8 @@ import OSMFunctions from './assets/scripts/OSMFunctions.js'
 import Center from './components/Center.vue'
 import MainHeaderBar from './components/MainHeaderBar.vue'
 import ModalChangePosition from './components/ModalChangePosition.vue'
-import FilterProvincia from './components/filter/FilterProvincia.vue'
 import listaCentros from './assets/scripts/db/centros.js'
+import FilterList from './components/filter/FilterList.vue'
 
 window.Sortable = require('sortablejs');
 
@@ -56,9 +54,7 @@ export default {
   name: 'app',
   data () {
     return {
-      activeFilters: [
-        'AQDFilterProvincia'
-      ],
+      currentLanguage: 'gl',
       activeCenters: [],
       position: {
         'lat': 43,
@@ -70,17 +66,14 @@ export default {
   },
   components: {
     'AQDCenter': Center,
-    'AQDFilterProvincia': FilterProvincia,
+    'AQDFilterList': FilterList,
     'AQDMainHeaderBar': MainHeaderBar,
     'AQDModalChangePosition': ModalChangePosition
   },
   methods: {
     loadCenters() {
       var centros = listaCentros;
-      for(var i = 0; i < this.activeFilters.length; i++) {
-        centros = centros.filter(this.$refs[this.activeFilters[i]][0].filter)
-      }
-      this.activeCenters =  centros;
+      this.activeCenters = this.$refs.filterList.filter(centros);
       this.doCentersSortable();
     },
     getLocation() {
@@ -118,8 +111,9 @@ export default {
     }
   },
   created() {
-    eventBus.$on('filterChanged', this.loadCenters);
+    eventBus.$on('filterOrSortChanged', this.loadCenters);
     eventBus.$on('locationChanged', this.updateOSMData)
+
     //this.loadCenters();
     this.getLocation();
   }
