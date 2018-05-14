@@ -3,7 +3,7 @@ import $ from 'jquery'
 
 export default {
   updateOSMTimes(centros, currentLocation, callback) {
-    const request_max_size = 10;
+    const request_max_size = 300;
     var  ajax_calls = [],
           localizaciones = "";
 
