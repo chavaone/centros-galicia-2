@@ -12,8 +12,11 @@
         <div class="info">
           <span>{{ $t('number-centers', [activeCenters.length]) }}</span>
         </div>
-        <AQDSortControl ref="sortBar" :sortRef="'sortBar'" :showTitle="false"></AQDSortControl>
-        <a class="btn btn-primary" data-toggle="collapse" href="#asideSortFilter" role="button" aria-expanded="false" aria-controls="asideSortFilter">Ordenar y Filtrar</a>
+        <span class="info">{{ $t('number-centers', [currentPage, totalPages, activeCenters.length]) }}</span>
+        <AQDSortControl ref="sortBar" :sortRef="'sortBar'" :showTitle="false" id="sortBar"></AQDSortControl>
+        <span class="boton">
+          <a class="btn btn-primary" data-toggle="collapse" href="#asideSortFilter" role="button" aria-expanded="false" aria-controls="asideSortFilter">Filtros</a>
+        </span>
       </nav>
     </header>
     <main>
@@ -122,14 +125,34 @@ export default {
   nav.barra {
     @include make-box;
     @include make-row;
+
     margin: 0.7em 0;
-    padding: 0.35em 0;
+    align-items: center;
+    justify-content: flex-start;
 
     .info {
-      @include make-col-ready;
-      @include make-col(6);
-      margin-top:7px;
       font-size:0.75em;
+    }
+
+    .boton {
+      text-align: right;
+      flex: 1;
+    }
+
+    #sortBar {
+      display: none;
+    }
+
+    @include media-breakpoint-up(sm) {
+      .boton {
+        display:none;
+      }
+
+      #sortBar {
+        display: inline-block;
+        text-align: right;
+        flex: 1;
+      }
     }
   }
 
@@ -141,15 +164,22 @@ export default {
       @include make-col-ready();
       @include make-col(12);
       margin-bottom: 1em;
+      padding-right: 0;
 
       @include media-breakpoint-up(sm) {
-      @include make-col(3);
-              display: inline-block !important;
+        @include make-col(3);
+        display: inline-block !important;
       }
     }
 
     aside>form {
         @include make-box;
+
+        @include media-breakpoint-up(sm) {
+            #sort-list {
+              display: none;
+            }
+        }
     }
 
     &>div {
