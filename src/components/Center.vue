@@ -7,8 +7,8 @@
             </header>
             <div class="travel-info">
                 <span class="title">{{ $t('info-travel') }}</span>
-                <span class="distancia"><i class="fas fa-route"></i>{{centro.osm.distancia | prettyDistance}}</span>
-                <span class="tiempo"><i class="fas fa-clock"></i>{{centro.osm.tiempo | prettyTime}}</span>
+                <span class="distancia" v-if="centro.osm"><i class="fas fa-route"></i>{{centro.osm.distancia | prettyDistance}}</span>
+                <span class="tiempo" v-if="centro.osm"><i class="fas fa-clock"></i>{{centro.osm.tiempo | prettyTime}}</span>
             </div>
         </div>
         <div class="botones">
@@ -46,9 +46,10 @@ export default {
     },
     prettyTime (seconds) {
       var ret = "",
-          hours = Math.floor(seconds / 3600),
-          minutes = Math.floor((seconds % 3600) / 60),
-          secs = (seconds % 3600) % 60;
+          secondsInt = Math.floor(seconds),
+          hours = Math.floor(secondsInt / 3600),
+          minutes = Math.floor((secondsInt % 3600) / 60),
+          secs = (secondsInt % 3600) % 60;
 
           if (hours) {
               ret = hours.toString() + "h. ";
@@ -58,7 +59,7 @@ export default {
               ret = ret + minutes.toString() + "min. ";
           }
 
-          if (seconds && ! ret) {
+          if (secondsInt && ! ret) {
               ret = ret + secs.toString() + "s. ";
           }
 
@@ -75,108 +76,89 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "./../assets/styles/mixins.scss";
-@import "~bootstrap/scss/bootstrap.scss";
+
 article {
-        @include make-box;
-        @include make-row;
-        margin: 0 0 0.75em 0;
+  @include make-box;
+  margin-bottom: 1em;
 
-        @include media-breakpoint-down(xs) {
-            margin: 0 -10px;
+  display: grid;
+  grid-column-gap: 20px;
+  grid-template-columns: [start-center] 1fr [start-button] 30px [end-center];
+  grid-template-rows: [start-center] 110px [start-info] 1fr [end-center];
+
+  .botones {
+      grid-column: start-button / end-center;
+      grid-row: start-center / start-info;
+  }
+
+  .info {
+      grid-column: start-center / start-button;
+      grid-row: start-center / start-info;
+
+      header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        margin-bottom: 1em;
+
+        .city {
+          font-style: italic;
+          font-size: 0.9em;
         }
 
-        .info {
-            @include make-col-ready();
-            @include make-col(11);
-
-            @include media-breakpoint-down(xs) {
-                @include make-col(10);
-            }
-
-            header {
-                border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-                margin-bottom: 1em;
-
-                @include media-breakpoint-up(sm) {
-                    .name,.city {
-                        display: inline;
-                    }
-                }
-
-                .city {
-                    font-style: italic;
-                    font-size: 0.9em;
-                    margin-left: 0.5em;
-                }
-
-                .city::before {
-                    content: "(";
-                }
-
-                .city::after {
-                    content: ")";
-                }
-            }
-
-            .travel-info {
-
-                padding-left: 30px;
-
-                .title {
-                    font-weight: bold;
-                    margin-right: 0.5em;
-
-                    @include media-breakpoint-down(xs) {
-                        display: block;
-                    }
-                }
-
-                .title::before {
-                  //@include icon($icon-car);
-                    margin-right: 0.3em;
-                }
-
-                .distancia,.tiempo {
-                    font-style: italic;
-
-                    svg {
-                        margin-right: 0.2em;
-                    }
-                }
-            }
+        .city::before {
+          content: "(";
         }
 
-        .botones {
-            @include make-col-ready();
-            @include make-col(1);
+        .city::after {
+          content: ")";
+        }
+      }
 
-            @include media-breakpoint-down(xs) {
-                @include make-col(2);
+      .travel-info {
+        padding-left: 1em;
 
-                button {
-                    padding: 0.4rem 0.8rem;
-                    font-size: 1.1rem;
-                    line-height: 1.5;
-                    border-radius: 0.3rem;
-                }
-            }
-
+        .title {
+            font-weight: bold;
+            margin-right: 0.5em;
         }
 
-        .more-info {
-            @include make-col-ready();
-            @include make-col(12);
-            margin-top: 1em;
-            border-top: 1px solid rgba(0, 0, 0, 0.125);
-            padding-top: 1em;
+        .distancia,.tiempo {
+            font-style: italic;
 
-            dl {
-                columns: 2;
+            svg {
+                margin-right: 0.2em;
             }
-
         }
+      }
+  }
+
+  .more-info {
+    grid-column: start-center / end-center;
+    grid-row: start-info / end-center;
+
+    margin-top: 1em;
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1em;
+
+    dl {
+        columns: 2;
+        margin-bottom: 0;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    grid-template-rows: [start-center] 95px [start-info] 1fr [end-center];
+
+    .info {
+      header>h3,
+      header>.city {
+        display: inline-block;
+        margin-left: 0.5em;
+      }
+    }
+  }
+
 }
 </style>
 
