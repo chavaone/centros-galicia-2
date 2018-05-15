@@ -1,10 +1,24 @@
 <template lang="html">
   <div class="filter">
     <h5>{{ $t('studiestype') }}</h5>
-    <div class="estudiosList">
+    <div class="filterList">
       <span v-for="tipo in tiposDeEstudios"
             :class="{active: checkedTiposDeEstudios.indexOf(tipo.cod) != -1}"
-            @click="addOrDeleteEstudio(tipo .cod)">{{tipo.nombre}}</span>
+            @click="addOrDeleteEstudio(tipo.cod)">{{tipo.nombre}}</span>
+    </div>
+    <div class="no-flex-fallback">
+      <div class="form-check"
+           v-for="tipo in tiposDeEstudios">
+        <input  type="checkbox"
+                class="form-check-input"
+                :value="tipo.cod" :id="tipo.cod + '-checkbox'"
+                v-model="checkedTiposDeEstudios"
+                @change="filterChanged()">
+        <label  class="form-check-label"
+                :for="tipo.cod + '-checkbox'">
+          {{tipo.nombre}}
+        </label>
+      </div>
     </div>
   </div>
 </template>
@@ -56,6 +70,9 @@ export default {
       }
       return false;
     },
+    filterChanged() {
+      eventBus.$emit('filterOrSortChanged', 'filterTipoDeEstudios');
+    },
     addOrDeleteEstudio(est) {
       var index = this.checkedTiposDeEstudios.indexOf(est);
       if(index == -1) {
@@ -73,44 +90,6 @@ export default {
 </script>
 
 <style lang="scss">
-$selected-color: darken(#007bff, 5%);
-$unselected-color: lighten($selected-color, 10%);
-
-  div.estudiosList {
-    display: flex;
-    flex-wrap: wrap;
-
-    span {
-      flex: 1 1 50%;
-      padding: 0.2em 1em;
-      border: #007bff solid 1px;
-      background: $unselected-color;
-      cursor: pointer;
-      text-transform: uppercase;
-      text-align: center;
-      font-size: 0.8em;
-      color:white;
-      font-weight: bold;
-    }
-
-    span:nth-child(1) {
-      border-top-left-radius: 0.2rem;
-    }
-
-    span:nth-child(2) {
-      border-top-right-radius: 0.2rem;
-    }
-
-    span:last-child {
-      border-bottom-left-radius: 0.2rem;
-      border-bottom-right-radius: 0.2rem;
-    }
-
-    span.active {
-      background: $selected-color;
-    }
-
-  }
 </style>
 
 <i18n>

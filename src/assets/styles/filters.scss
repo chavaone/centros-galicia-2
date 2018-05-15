@@ -1,0 +1,51 @@
+
+@import "variables.scss";
+
+div.filter {
+  margin-bottom: 1em;
+}
+
+div.filterList {
+  display: none;
+}
+
+@supports (display: flex) {
+  div.no-flex-fallback {
+    display: none;
+  }
+
+  div.filterList {
+    display: flex;
+    flex-wrap: wrap;
+
+    span {
+      flex: 1 1 50%;
+      padding: 0.2em 1em;
+      border: #007bff solid 1px;
+      background: $unselected-color;
+      cursor: pointer;
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 0.8em;
+      color:white;
+      font-weight: bold;
+    }
+
+    span:nth-child(1) {
+      border-top-left-radius: 0.2rem;
+    }
+
+    span:nth-child(2) {
+      border-top-right-radius: 0.2rem;
+    }
+
+    span:last-child {
+      border-bottom-left-radius: 0.2rem;
+      border-bottom-right-radius: 0.2rem;
+    }
+
+    span.active {
+      background: $selected-color;
+    }
+  }
+}
