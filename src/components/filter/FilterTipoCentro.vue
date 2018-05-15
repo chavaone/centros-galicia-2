@@ -50,14 +50,11 @@ export default {
   },
   methods: {
     filter(centro) {
-      var ret = false;
       for(var i = 0; i < this.checkedTiposdecentro.length; i++) {
-        console.log(centro.nombre);
-        console.log(this.checkedTiposdecentro[i])
-        console.log(centro.nombre.startsWith(this.checkedTiposdecentro[i]));
-        ret = ret || centro.nombre.startsWith(this.checkedTiposdecentro[i]);
+        if (centro.nombre.startsWith(this.checkedTiposdecentro[i]))
+          return true;
       }
-      return ret;
+      return false;
     },
     filterChanged() {
       eventBus.$emit('filterOrSortChanged', 'filterTipoCentro');
