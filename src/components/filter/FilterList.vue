@@ -8,19 +8,22 @@
 <script>
 import FilterProvincia from './FilterProvincia.vue'
 import FilterTipoCentro from './FilterTipoCentro.vue'
+import FilterTipoEstudios from './FilterTipoEstudios.vue'
 
 export default {
   data() {
     return {
       activeFilters: [
         'AQDFilterProvincia',
-        'AQDFilterTipoCentro'
+        'AQDFilterTipoCentro',
+        'AQDFilterTipoEstudios'
       ]
     };
   },
   components: {
     'AQDFilterProvincia': FilterProvincia,
     'AQDFilterTipoCentro': FilterTipoCentro,
+    'AQDFilterTipoEstudios': FilterTipoEstudios
   },
   methods: {
     filter (centers) {
