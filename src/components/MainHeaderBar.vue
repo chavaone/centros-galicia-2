@@ -10,7 +10,7 @@
               <div class="collapse navbar-collapse" id="menuprincipal">
                 <ul class="navbar-nav justify-content-end ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#cambiarPosicionModal">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#cambiarPosicionModal" @click="positionModalEnabled">
                           {{ $t('change-coords') }}
                         </a>
                     </li>
@@ -35,6 +35,7 @@
 import ModalChangePosition from './ModalChangePosition.vue'
 import ModalExportCenters from './ModalExportCenters.vue'
 
+import { eventBus } from '../main.js';
 
 export default {
   props: {
@@ -45,6 +46,11 @@ export default {
   components: {
     'AQDModalChangePosition': ModalChangePosition,
     'AQDModalExportCenters': ModalExportCenters
+  },
+  methods: {
+    positionModalEnabled() {
+      eventBus.$emit('positionModalEnabled');
+    }
   }
 }
 </script>
