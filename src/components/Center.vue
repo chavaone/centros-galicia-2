@@ -24,32 +24,39 @@
         </div>
         <div class="more-info collapse" :id="'info-cen-' + centro.cod">
             <dl>
+              <div class="">
                 <dt>{{ $t('enderezo') }}</dt>
                 <dd>{{centro.enderezo}}</dd>
-                <template v-if="centro.web.length > 0">
+
+              </div>
+                <div v-if="centro.web.length > 0">
                   <dt>{{ $t('web') }}</dt>
                   <dd><a :href="centro.web">{{centro.web}}</a></dd>
-                </template>
-                <dt>{{ $t('email') }}</dt>
-                <dd><img :src="'/static/emails/' + centro.cod + '.png'" alt=""></dd>
-                <template v-if="centro.servizos.length > 0">
+                </div>
+                <div>
+                  <dt>{{ $t('email') }}</dt>
+                  <dd><img :src="'/static/emails/' + centro.cod + '.png'" alt=""></dd>
+                </div>
+                <div v-if="centro.servizos.length > 0">
                     <dt>{{ $t('servizos') }}</dt>
                     <dd>{{ centro.servizos.join(', ') }}</dd>
-                </template>
-                <dt> {{$t('telefono')}}</dt>
-                <dd>{{ centro.tlf }}</dd>
-                <template v-if="centro.xornada.inf">
+                </div>
+                <div>
+                  <dt> {{$t('telefono')}}</dt>
+                  <dd>{{ centro.tlf }}</dd>
+                </div>
+                <div v-if="centro.xornada.inf">
                   <dt> {{$t('xornada-inf')}}</dt>
                   <dd>{{ centro.xornada.inf }}</dd>
-                </template>
-                <template v-if="centro.xornada.prim">
+                </div>
+                <div v-if="centro.xornada.prim">
                   <dt> {{$t('xornada-inf')}}</dt>
                   <dd>{{ centro.xornada.prim }}</dd>
-                </template>
-                <template v-if="centro.ensinanzas.bac">
+                </div>
+                <div v-if="centro.ensinanzas.bac">
                   <dt> {{$t('ramas-bac')}}</dt>
                   <dd>{{ centro.ensinanzas.bac | prettyRamas}}</dd>
-                </template>
+                </div>
             </dl>
         </div>
     </article>
@@ -171,9 +178,15 @@ article {
     border-top: 1px solid rgba(0, 0, 0, 0.125);
     padding: 1em;
 
+
     dl {
-        columns: 2;
-        margin-bottom: 0;
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+
+      div {
+        flex: 1 1 300px;
+      }
     }
   }
 
