@@ -190,7 +190,7 @@ export default {
       display: none;
     }
 
-    @include media-breakpoint-up(sm) {
+    @include media-breakpoint-up(md) {
       .boton {
         display:none;
       }
@@ -213,7 +213,7 @@ export default {
       margin-bottom: 1em;
       padding-right: 0;
 
-      @include media-breakpoint-up(sm) {
+      @include media-breakpoint-up(md) {
         @include make-col(3);
         display: inline-block !important;
       }
@@ -222,7 +222,7 @@ export default {
     aside>form {
         @include make-box;
 
-        @include media-breakpoint-up(sm) {
+        @include media-breakpoint-up(md) {
             #sort-list {
               display: none;
             }
@@ -233,7 +233,7 @@ export default {
         @include make-col-ready();
         @include make-col(12);
 
-        @include media-breakpoint-up(sm) {
+        @include media-breakpoint-up(md) {
             @include make-col(9);
         }
       }

@@ -20,7 +20,7 @@ div.filterList {
 
     span {
       flex: 1 1 50%;
-      padding: 0.2em 1em;
+      padding: 0.5em 1em;
       border: #007bff solid 1px;
       background: $unselected-color;
       cursor: pointer;
@@ -29,6 +29,9 @@ div.filterList {
       font-size: 0.8em;
       color:white;
       font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     span:nth-child(1) {
