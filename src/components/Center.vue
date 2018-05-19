@@ -7,16 +7,15 @@
             </header>
             <div class="travel-info">
                 <span class="title">{{ $t('info-travel') }}</span>
-                <span class="distancia" v-if="centro.osm"><i class="fas fa-route"></i>{{centro.osm.distancia | prettyDistance}}</span>
-                <span class="tiempo" v-if="centro.osm"><i class="fas fa-clock"></i>{{centro.osm.tiempo | prettyTime}}</span>
+                <span class="distancia"><i class="fas fa-route"></i>{{prettyDistance}}</span>
+                <span class="tiempo"><i class="fas fa-clock"></i>{{prettyTime}}</span>
             </div>
         </div>
         <div class="botones">
             <div class="btn-group pull-right btn-group-vertical" role="group" aria-label="Basic example">
               <button type="button"
                       class="btn btn-sm btn-primary"
-                      v-clipboard:copy="centro.cod"
-                      v-clipboard:success="onCopy">
+                      v-clipboard:copy="centro.cod">
                       <i class="fa fa-clipboard"></i>
               </button>
               <button type="button" class="btn btn-sm btn-primary" @click="trash()"><i class="fa fa-trash"></i></button>
@@ -63,14 +62,18 @@ export default {
   props: {
     centro: Object
   },
-  filters: {
-    prettyDistance(distance) {
+  computed: {
+    prettyDistance() {
+      if (! this.centro.osm) return "---";
+      var distance = this.centro.osm.distancia;
       if (distance < 1) {
           return (Math.floor(distance * 1000)).toString() + " m.";
       }
       return Math.floor(distance).toString() + " km.";
     },
-    prettyTime (seconds) {
+    prettyTime () {
+      if (! this.centro.osm) return "---";
+      var seconds = this.centro.osm.tiempo;
       var ret = "",
           secondsInt = Math.floor(seconds),
           hours = Math.floor(secondsInt / 3600),
@@ -99,9 +102,6 @@ export default {
       }
   },
   methods: {
-    onCopy(){
-      console.log(this.centro.cod);
-    },
     trash(){
       eventBus.$emit('trashcenter', this.centro);
     }
