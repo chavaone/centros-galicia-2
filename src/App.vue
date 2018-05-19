@@ -79,6 +79,9 @@ export default {
       currentPage: 0,
       itemsPerPage: 100,
       resultCount: 0,
+      sortableoptions: {
+        handle: 'h3.name',
+      }
     }
   },
   computed: {
@@ -141,6 +144,10 @@ export default {
       OSMFunctions.updateOSMDistances(this.centers, position, function () {
         self.loadedDistances = true;
       });
+    },
+    setCustomSort() {
+      this.$refs.sortAside.setCustomSort();
+      this.$refs.sortBar.setCustomSort();
     },
     dbLoaded() {
       this.centers = raw_centers_db;
