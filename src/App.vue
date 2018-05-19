@@ -9,10 +9,7 @@
     <header>
       <AQDMainHeaderBar :position="position" :activeCenters="activeCenters" :language="currentLanguage"></AQDMainHeaderBar>
       <nav class="barra">
-        <div class="info">
-          <span>{{ $t('number-centers', [activeCenters.length]) }}</span>
-        </div>
-        <span class="info">{{ $t('number-centers', [currentPage, totalPages, activeCenters.length]) }}</span>
+        <span class="info">{{ $t('number-centers', [currentPage + 1, totalPages, activeCenters.length]) }}</span>
         <AQDSortControl ref="sortBar" :sortRef="'sortBar'" :showTitle="false" id="sortBar"></AQDSortControl>
         <span class="boton">
           <a class="btn btn-primary" data-toggle="collapse" href="#asideSortFilter" role="button" aria-expanded="false" aria-controls="asideSortFilter">Filtros</a>
@@ -27,9 +24,27 @@
           <AQDFilterList ref="filterList"></AQDFilterList>
         </form>
       </aside>
-      <AQDDraggable v-model="activeCenters">
-        <AQDCenter v-for="centro in activeCenters" :centro="centro" :key="centro.cod"></AQDCenter>
+      <AQDDraggable v-model="activeCenters" @change="setCustomSort()" :options="sortableoptions">
+          <AQDCenter v-for="centro in paginatedActiveCenters" :centro="centro" :key="centro.cod"></AQDCenter>
       </AQDDraggable>
+      <nav class="center-pagination">
+        <ul class="pagination">
+          <li class="page-item"
+              :class="{disabled: currentPage == 0}">
+            <a class="page-link" href="#" tabindex="-1" @click="currentPage--"> $t('anterior') </a>
+          </li>
+          <li v-for="page in totalPages"
+              class="page-item"
+              :class="{active: currentPage == page - 1}">
+            <a  class="page-link"
+                @click="currentPage = page - 1;"
+            >{{page}}</a>
+          </li>
+          <li class="page-item" :class="{disabled: currentPage == totalPages - 1}">
+            <a class="page-link" @click="currentPage++;">{{ $t('seguinte') }}</a>
+          </li>
+        </ul>
+      </nav>
     </main>
     <footer>
 
@@ -61,6 +76,25 @@ export default {
       },
       loadedDistances: false,
       loadedTimes: false,
+      currentPage: 0,
+      itemsPerPage: 100,
+      resultCount: 0,
+    }
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.resultCount / this.itemsPerPage);
+    },
+    paginatedActiveCenters() {
+      this.resultCount = this.activeCenters.length;
+
+      if (this.currentPage >= this.totalPages) {
+        this.currentPage = Math.max(0, this.totalPages - 1);
+      }
+
+      var index = this.currentPage * this.itemsPerPage;
+
+      return this.activeCenters.slice(index, index + this.itemsPerPage);
     }
   },
   components: {
