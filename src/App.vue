@@ -17,6 +17,7 @@
         <span class="boton">
           <a class="btn btn-primary" data-toggle="collapse" href="#asideSortFilter" role="button" aria-expanded="false" aria-controls="asideSortFilter">Filtros</a>
         </span>
+        <AQDTrash ref="trash"></AQDTrash>
       </nav>
     </header>
     <main>
@@ -67,15 +68,19 @@ export default {
     'AQDCenter': Center,
     'AQDFilterList': FilterList,
     'AQDMainHeaderBar': MainHeaderBar,
-    'AQDSortControl': SortList
+    'AQDSortControl': SortList,
+    'AQDTrash': Trash
   },
   methods: {
     loadCenters(origin) {
       this.activeCenters = listaCentros;
       if (! origin.startsWith("sort")) {
         this.activeCenters = this.$refs.filterList.filter(this.activeCenters);
-      } else {
+      } else if (origin.startsWith("sort")) {
         this.activeCenters = this.$refs[origin].sort(this.activeCenters);
+      } else {
+        this.activeCenters = this.centers;
+        this.activeCenters = this.activeCenters.filter(this.$refs.trash.filter);
       }
     },
     getLocation() {

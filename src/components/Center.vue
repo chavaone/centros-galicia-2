@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { eventBus } from '../main.js'
+
 export default {
   props: {
     centro: Object
@@ -71,6 +73,7 @@ export default {
       console.log(this.centro.cod);
     },
     trash(){
+      eventBus.$emit('trashcenter', this.centro);
     }
   }
 }
