@@ -1,6 +1,6 @@
 export default {
   sortByName(centro1, centro2) {
-    return centro1.nombre.localeCompare(centro2.nombre);
+    return centro1.nome.localeCompare(centro2.nome);
   },
   sortByTime(centro1, centro2) {
     return centro1.osm.tiempo < centro2.osm.tiempo ? -1 : 1;

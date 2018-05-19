@@ -31,32 +31,52 @@ export default {
     return {
       tiposDeEstudios: [
         {
-          nombre: 'Infantil',
+          nombre: this.$i18n.t('infantil'),
           cod: 'inf'
         },
         {
-          nombre: 'Primaria',
+          nombre:  this.$i18n.t('primaria'),
           cod: 'pri'
         },
         {
-          nombre: 'ESO',
+          nombre:  this.$i18n.t('eso'),
           cod: 'eso'
         },
         {
-          nombre: 'BAC',
+          nombre:  this.$i18n.t('bac'),
           cod: 'bac'
         },
         {
-          nombre: 'ESO de Adultos',
+          nombre:  this.$i18n.t('esa'),
           cod: 'esa'
         },
         {
-          nombre: 'BAC de Adultos',
+          nombre:  this.$i18n.t('baca'),
           cod: 'baca'
         },
         {
-          nombre: 'Educación Especial',
+          nombre:  this.$i18n.t('esp'),
           cod: 'esp'
+        },
+        {
+          nombre:  this.$i18n.t('fp'),
+          cod: 'fp'
+        },
+        {
+          nombre:  this.$i18n.t('musica'),
+          cod: ['mus', 'mus-sup']
+        },
+        {
+          nombre:  this.$i18n.t('art-des'),
+          cod: ['prof-art-des', 'sup-desenho']
+        },
+        {
+          nombre:  this.$i18n.t('idiomas'),
+          cod: "idiomas"
+        },
+        {
+          nombre:  this.$i18n.t('dramatico'),
+          cod: "sup-drama"
         }
       ],
       checkedTiposDeEstudios: []
@@ -65,7 +85,14 @@ export default {
   methods: {
     filter(centro) {
       for(var i = 0; i < this.checkedTiposDeEstudios.length; i++) {
-        if (centro.ensinanzas.indexOf(this.checkedTiposDeEstudios[i]) != -1)
+        if (Array.isArray(this.checkedTiposDeEstudios[i])){
+            for (var j = 0; j < this.checkedTiposDeEstudios[i].length; j++){
+              if (centro.ensinanzas[this.checkedTiposDeEstudios[i][j]]) {
+                return true;
+              }
+            }
+        }
+        if (centro.ensinanzas[this.checkedTiposDeEstudios[i]])
           return true;
       }
       return false;
@@ -95,7 +122,34 @@ export default {
 <i18n>
   {
     "gl": {
-      "studiestype": "Estudos:"
+      "studiestype": "Estudos:",
+      "infantil": "Infantil",
+      "primaria": "Primaria",
+      "eso": "ESO",
+      "bac": "BAC",
+      "esa": "ESO de Adultos",
+      "baca": "Bacharelato de Adultos",
+      "esp": "Educación Especial",
+      "fp": "FP",
+      "musica": "Música",
+      "art-des": "Arte e Deseño",
+      "idiomas": "Idiomas",
+      "dramatico": "Arte Dramático"
+    },
+    "es": {
+      "studiestype": "Estudos:",
+      "infantil": "Infantil",
+      "primaria": "Primaria",
+      "eso": "ESO",
+      "bac": "BAC",
+      "esa": "ESO de Adultos",
+      "baca": "Bachillerato de Adultos",
+      "esp": "Educación Especial",
+      "fp": "FP",
+      "musica": "Música",
+      "art-des": "Arte y Diseño",
+      "idiomas": "Idiomas",
+      "dramatico": "Arte Dramático"
     }
   }
 </i18n>

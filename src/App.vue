@@ -54,7 +54,6 @@
 
 <script>
 import { eventBus } from './main.js'
-import listaCentros from './assets/scripts/db/centros.js'
 import OSMFunctions from './assets/scripts/OSMFunctions.js'
 
 //Components
@@ -63,12 +62,13 @@ import Center from './components/Center.vue'
 import MainHeaderBar from './components/MainHeaderBar.vue'
 import FilterList from './components/filter/FilterList.vue'
 import SortList from './components/sort/SortList.vue'
+import Trash from './components/Trash.vue'
 
 export default {
   name: 'app',
   data () {
     return {
-      currentLanguage: 'gl',
+      centers: [],
       activeCenters: [],
       position: {
         'lat': 43,
@@ -107,8 +107,9 @@ export default {
   },
   methods: {
     loadCenters(origin) {
-      this.activeCenters = listaCentros;
-      if (! origin.startsWith("sort")) {
+
+      if (origin.startsWith("filter")) {
+        this.activeCenters = this.centers;
         this.activeCenters = this.$refs.filterList.filter(this.activeCenters);
       } else if (origin.startsWith("sort")) {
         this.activeCenters = this.$refs[origin].sort(this.activeCenters);
@@ -133,21 +134,28 @@ export default {
       this.loadedDistances = false;
       var self = this;
 
-      OSMFunctions.updateOSMTimes(listaCentros, position, function () {
+      OSMFunctions.updateOSMTimes(this.centers, position, function () {
         self.loadedTimes = true;
       });
 
-      OSMFunctions.updateOSMDistances(listaCentros, position, function () {
+      OSMFunctions.updateOSMDistances(this.centers, position, function () {
         self.loadedDistances = true;
       });
+    },
+    dbLoaded() {
+      this.centers = raw_centers_db;
+      this.activeCenters = this.centers;
+      this.getLocation();
     }
   },
   created() {
     eventBus.$on('filterOrSortChanged', this.loadCenters);
     eventBus.$on('locationChanged', this.updateOSMData)
 
-    //this.loadCenters();
-    this.getLocation();
+    var dbScript = document.createElement("script");
+    dbScript.onload = this.dbLoaded;
+    dbScript.src="/static/db.js";
+    document.getElementById("app").appendChild(dbScript);
   }
 }
 </script>

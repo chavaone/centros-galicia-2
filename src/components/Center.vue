@@ -2,7 +2,7 @@
   <article :data-cod="centro.cod">
         <div class="info">
             <header>
-                <h3 class="name">{{centro.nombre}}</h3>
+                <h3 class="name">{{centro.nome}}</h3>
                 <h5 class="city">{{centro.concello}}, {{centro.provincia}}</h5>
             </header>
             <div class="travel-info">
@@ -25,8 +25,32 @@
         </div>
         <div class="more-info collapse" :id="'info-cen-' + centro.cod">
             <dl>
-                <dt>{{ $t('num-linhas') }}</dt>
-                <dd>3</dd>
+                <dt>{{ $t('enderezo') }}</dt>
+                <dd>{{centro.enderezo}}</dd>
+                <template v-if="centro.web.length > 0">
+                  <dt>{{ $t('web') }}</dt>
+                  <dd><a :href="centro.web">{{centro.web}}</a></dd>
+                </template>
+                <dt>{{ $t('email') }}</dt>
+                <dd><img :src="'/static/emails/' + centro.cod + '.png'" alt=""></dd>
+                <template v-if="centro.servizos.length > 0">
+                    <dt>{{ $t('servizos') }}</dt>
+                    <dd>{{ centro.servizos.join(', ') }}</dd>
+                </template>
+                <dt> {{$t('telefono')}}</dt>
+                <dd>{{ centro.tlf }}</dd>
+                <template v-if="centro.xornada.inf">
+                  <dt> {{$t('xornada-inf')}}</dt>
+                  <dd>{{ centro.xornada.inf }}</dd>
+                </template>
+                <template v-if="centro.xornada.prim">
+                  <dt> {{$t('xornada-inf')}}</dt>
+                  <dd>{{ centro.xornada.prim }}</dd>
+                </template>
+                <template v-if="centro.ensinanzas.bac">
+                  <dt> {{$t('ramas-bac')}}</dt>
+                  <dd>{{ centro.ensinanzas.bac | prettyRamas}}</dd>
+                </template>
             </dl>
         </div>
     </article>
@@ -67,6 +91,12 @@ export default {
 
       return ret;
     }
+  },
+  filters: {
+      prettyRamas (obj) {
+          var keys = (function(o){var ks=[]; for(var k in o) ks.push(k); return ks})(obj);
+          return keys.join(", ");
+      }
   },
   methods: {
     onCopy(){
@@ -169,7 +199,17 @@ article {
   {
     "gl": {
       "info-travel": "Info Viaxe:",
-      "num-linhas": "Liñas"
+      "num-linhas": "Liñas",
+      "xornada-inf": "Xornada de Educación Infantil",
+      "xornada-prim": "Xornada de Educación Primaria",
+      "telefono": "Teléfono",
+      "fax": "Fax",
+      "web": "Web",
+      "email": "Enderezo email",
+      "ramas-bac": "Ramas Bacharelato",
+      "enderezo": "Enderezo",
+      "servizos": "Servizos"
+    }
     }
   }
 </i18n>

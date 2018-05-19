@@ -39,7 +39,10 @@ export default {
         'EEI',
         'CEP',
         'CRA',
-        'CFEA'
+        'CFEA',
+        'CMUS',
+        'EASD',
+        'ESAD'
       ],
       checkedTiposdecentro: [
         'IES',
@@ -51,14 +54,17 @@ export default {
         'EEI',
         'CEP',
         'CRA',
-        'CFEA'
+        'CFEA',
+        'CMUS',
+        'EASD',
+        'ESAD'
       ]
     };
   },
   methods: {
     filter(centro) {
       for(var i = 0; i < this.checkedTiposdecentro.length; i++) {
-        if (centro.nombre.startsWith(this.checkedTiposdecentro[i]))
+        if (centro.nome.startsWith(this.checkedTiposdecentro[i]))
           return true;
       }
       return false;
