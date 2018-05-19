@@ -206,7 +206,18 @@ article {
       "ramas-bac": "Ramas Bacharelato",
       "enderezo": "Enderezo",
       "servizos": "Servizos"
-    }
+    },
+    "es": {
+      "info-travel": "Info Viaje:",
+      "xornada-inf": "Jornada de Educación Infantil",
+      "xornada-prim": "Jornada de Educación Primaria",
+      "telefono": "Teléfono",
+      "fax": "Fax",
+      "web": "Web",
+      "email": "Dirección email",
+      "ramas-bac": "Ramas Bachillerato",
+      "enderezo": "Direccioń",
+      "servizos": "Servicios"
     }
   }
 </i18n>

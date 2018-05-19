@@ -92,6 +92,9 @@ export default {
   {
     "gl": {
       "centertype": "Tipos de Centro:"
+    },
+    "es": {
+      "centertype": "Tipos de Centro:"
     }
   }
 </i18n>

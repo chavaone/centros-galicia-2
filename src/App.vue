@@ -7,7 +7,7 @@
       {{ $t('loading-times') }}
     </div>
     <header>
-      <AQDMainHeaderBar :position="position" :activeCenters="activeCenters" :language="currentLanguage"></AQDMainHeaderBar>
+      <AQDMainHeaderBar :position="position" :activeCenters="activeCenters"></AQDMainHeaderBar>
       <nav class="barra">
         <span class="info">{{ $t('number-centers', [currentPage + 1, totalPages, activeCenters.length]) }}</span>
         <AQDSortControl ref="sortBar" :sortRef="'sortBar'" :showTitle="false" id="sortBar"></AQDSortControl>
@@ -31,7 +31,7 @@
         <ul class="pagination">
           <li class="page-item"
               :class="{disabled: currentPage == 0}">
-            <a class="page-link" href="#" tabindex="-1" @click="currentPage--"> $t('anterior') </a>
+            <a class="page-link" href="#" tabindex="-1" @click="currentPage--">{{ $t('anterior') }}</a>
           </li>
           <li v-for="page in totalPages"
               class="page-item"
@@ -264,7 +264,16 @@ export default {
     "gl": {
       "number-centers": "Amosando a páxina {0} de {1} para un total de {2} centros",
       "loading-times": "Estamos cargando os tempos dende a súa localización a cada centro. Espere por favor.",
-      "loading-distances": "Estamos cargando as distancias dende a súa localización a cada centro. Espere por favor."
+      "loading-distances": "Estamos cargando as distancias dende a súa localización a cada centro. Espere por favor.",
+      "seguinte": "Seguinte",
+      "anterior": "Anterior"
+    },
+    "es": {
+      "number-centers": "Mostrando la página {0} de {1} para un total de {2} centros",
+      "loading-times": "Estamos cargando los tiempos de viaje desde su localización a cada centro. Espere por favor.",
+      "loading-distances": "Estamos cargando la distancia desde su localización a cada centro. Espere por favor.",
+      "seguinte": "Siguiente",
+      "anterior": "Anterior"
     }
   }
 </i18n>

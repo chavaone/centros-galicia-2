@@ -4,7 +4,8 @@
     <div class="filterList">
       <span v-for="tipo in tiposDeEstudios"
             :class="{active: checkedTiposDeEstudios.indexOf(tipo.cod) != -1}"
-            @click="addOrDeleteEstudio(tipo.cod)">{{tipo.nombre}}</span>
+            @click="addOrDeleteEstudio(tipo.cod)"
+            v-t="tipo.nombre"></span>
     </div>
     <div class="no-flex-fallback">
       <div class="form-check"
@@ -15,9 +16,8 @@
                 v-model="checkedTiposDeEstudios"
                 @change="filterChanged()">
         <label  class="form-check-label"
-                :for="tipo.cod + '-checkbox'">
-          {{tipo.nombre}}
-        </label>
+                :for="tipo.cod + '-checkbox'"
+                v-t="tipo.nombre"></label>
       </div>
     </div>
   </div>
@@ -29,53 +29,54 @@ import { eventBus } from '../../main.js';
 export default {
   data : function() {
     return {
+      //The property 'nombre' is the key to be translated by VueI18n.
       tiposDeEstudios: [
         {
-          nombre: this.$i18n.t('infantil'),
+          nombre: 'infantil',
           cod: 'inf'
         },
         {
-          nombre:  this.$i18n.t('primaria'),
+          nombre: 'primaria',
           cod: 'pri'
         },
         {
-          nombre:  this.$i18n.t('eso'),
+          nombre: 'eso',
           cod: 'eso'
         },
         {
-          nombre:  this.$i18n.t('bac'),
+          nombre: 'bac',
           cod: 'bac'
         },
         {
-          nombre:  this.$i18n.t('esa'),
+          nombre: 'esa',
           cod: 'esa'
         },
         {
-          nombre:  this.$i18n.t('baca'),
+          nombre: 'baca',
           cod: 'baca'
         },
         {
-          nombre:  this.$i18n.t('esp'),
+          nombre: 'esp',
           cod: 'esp'
         },
         {
-          nombre:  this.$i18n.t('fp'),
+          nombre: 'fp',
           cod: 'fp'
         },
         {
-          nombre:  this.$i18n.t('musica'),
+          nombre: 'musica',
           cod: ['mus', 'mus-sup']
         },
         {
-          nombre:  this.$i18n.t('art-des'),
+          nombre: 'art-des',
           cod: ['prof-art-des', 'sup-desenho']
         },
         {
-          nombre:  this.$i18n.t('idiomas'),
+          nombre: 'idiomas',
           cod: "idiomas"
         },
         {
-          nombre:  this.$i18n.t('dramatico'),
+          nombre: 'dramatico',
           cod: "sup-drama"
         }
       ],
@@ -137,7 +138,7 @@ export default {
       "dramatico": "Arte Dramático"
     },
     "es": {
-      "studiestype": "Estudos:",
+      "studiestype": "Estudios:",
       "infantil": "Infantil",
       "primaria": "Primaria",
       "eso": "ESO",

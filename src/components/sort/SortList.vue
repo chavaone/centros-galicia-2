@@ -27,15 +27,15 @@ export default {
     return {
       availableMethods: {
         name: {
-          name: this.$i18n.t('sort-by-name'),
+          name: 'sort-by-name',
           fun: SortMethods.sortByName
         },
         time: {
-          name: this.$i18n.t('sort-by-time'),
+          name: 'sort-by-time',
           fun: SortMethods.sortByTime
         },
         distance: {
-          name: this.$i18n.t('sort-by-distance'),
+          name: 'sort-by-distance',
           fun: SortMethods.sortByDistance
         }
       },
@@ -168,8 +168,14 @@ export default {
         "resort": "Reordenar",
         "sort-by-name": "Nome",
         "sort-by-time": "Tempo",
-        "sort-by-distance": "Distancia",
-        "sort-by-custom": "Ordenación manual"
+        "sort-by-distance": "Distancia"
+      },
+      "es": {
+        "sort": "Ordenar:",
+        "resort": "Reordenar",
+        "sort-by-name": "Nome",
+        "sort-by-time": "Tiempo",
+        "sort-by-distance": "Distancia"
       }
   }
 </i18n>

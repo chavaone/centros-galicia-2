@@ -1,6 +1,6 @@
 <template lang="html">
   <div id="filter-list">
-    <h4>Filtrar</h4>
+    <h4>{{ $t('filter-title') }}</h4>
     <component v-for="filter in activeFilters" :is="filter" :ref="filter" :key="filter"></component>
   </div>
 </template>
@@ -40,3 +40,11 @@ export default {
 <style lang="scss">
   @import "../../assets/styles/filters.scss";
 </style>
+
+<i18n>
+  {
+    "gl": {
+      "filter-title": "Filtrar"
+    }
+  }
+</i18n>

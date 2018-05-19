@@ -72,6 +72,9 @@ export default {
   {
     "gl": {
       "provinces": "Provincias:"
+    },
+    "es": {
+      "provinces": "Provincias:"
     }
   }
 </i18n>
