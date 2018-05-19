@@ -236,7 +236,8 @@ export default {
         }
     }
 
-    &>div {
+    &>div,
+    &>.center-pagination {
         @include make-col-ready();
         @include make-col(12);
 
@@ -244,13 +245,24 @@ export default {
             @include make-col(9);
         }
       }
+
+      @include media-breakpoint-up(md) {
+        &>.center-pagination {
+          margin-left:25%;
+        }
+      }
+
+      .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
   }
 </style>
 
 <i18n>
   {
     "gl": {
-      "number-centers": "Seleccionados un total de {0} centros",
+      "number-centers": "Amosando a páxina {0} de {1} para un total de {2} centros",
       "loading-times": "Estamos cargando os tempos dende a súa localización a cada centro. Espere por favor.",
       "loading-distances": "Estamos cargando as distancias dende a súa localización a cada centro. Espere por favor."
     }
