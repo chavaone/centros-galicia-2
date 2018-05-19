@@ -109,26 +109,24 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "./../assets/styles/mixins.scss";
 
 article {
   @include make-box;
   margin-bottom: 1em;
 
-  display: grid;
-  grid-column-gap: 20px;
-  grid-template-columns: [start-center] 1fr [start-button] 30px [end-center];
-  grid-template-rows: [start-center] 110px [start-info] 1fr [end-center];
+  display: flex;
+  flex-wrap: wrap;
 
   .botones {
-      grid-column: start-button / end-center;
-      grid-row: start-center / start-info;
+      flex: 1 1 50px;
+      display: flex;
+      justify-content: center;
   }
 
   .info {
-      grid-column: start-center / start-button;
-      grid-row: start-center / start-info;
+      flex: 1 1 calc(100% - 50px);
 
       header {
         border-bottom: 1px solid rgba(0, 0, 0, 0.125);
@@ -167,8 +165,7 @@ article {
   }
 
   .more-info {
-    grid-column: start-center / end-center;
-    grid-row: start-info / end-center;
+    flex: 1 1 100%;
 
     margin-top: 1em;
     border-top: 1px solid rgba(0, 0, 0, 0.125);
