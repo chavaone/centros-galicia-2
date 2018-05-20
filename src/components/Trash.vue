@@ -79,7 +79,7 @@ export default {
       "trash-title": "Centros no Lixo",
       "no-centers": "Non hai centros no lixo."
     },
-    "gl" : {
+    "es" : {
       "trash-title": "Centros en la papelera",
       "no-centers": "No hay centros en la papelera."
     }
