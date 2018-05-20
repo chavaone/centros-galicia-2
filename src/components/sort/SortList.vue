@@ -4,17 +4,18 @@
     <div class="sortSelect">
       <span v-for="(method, key) in availableMethods"
       @click="changeSort(method)"
-      :class="{active: selectedMethod == method}">
-        {{method.name}}
-      </span>
+      :class="{active: selectedMethod == method}"
+      v-t="method.name"></span>
+    </div>
+    <div class="no-flex-fallback">
+      <select v-model="selectedMethod" @change="changeSort" >
+        <option v-for="(method, key) in availableMethods" :value="method" v-t="method.name"></option>
+      </select>
     </div>
     <a href="#" @click="changeSort(selectedMethod)">
       <i class="fas fa-sync-alt"></i>
       {{ $t('resort')}}
     </a>
-    <!--<select v-model="selectedMethod" @change="changeSort" >
-      <option v-for="(method, key) in availableMethods" :value="method">{{method.name}}</option>
-    </select>-->
   </div>
 </template>
 
@@ -84,6 +85,17 @@ export default {
   a {
     display: none;
   }
+
+  div.sortSelect {
+    display: none;
+  }
+
+
+ @supports (display:flex) {
+
+   div.no-flex-fallback {
+     display: none;
+   }
 
   div.sortSelect {
     display: inline-flex;
@@ -158,7 +170,7 @@ export default {
     }
 
   }
-
+}
 </style>
 
 <i18n>
@@ -173,7 +185,7 @@ export default {
       "es": {
         "sort": "Ordenar:",
         "resort": "Reordenar",
-        "sort-by-name": "Nome",
+        "sort-by-name": "Nombre",
         "sort-by-time": "Tiempo",
         "sort-by-distance": "Distancia"
       }
