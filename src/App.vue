@@ -122,7 +122,6 @@ export default {
       }
     },
     getLocation() {
-      console.log("getLocation");
       var self = this;
       navigator.geolocation.getCurrentPosition (function(pos) {
             self.position = {
@@ -257,6 +256,7 @@ export default {
         flex-wrap: wrap;
       }
   }
+
 </style>
 
 <i18n>
