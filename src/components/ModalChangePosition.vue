@@ -55,7 +55,7 @@ export default {
     return {
       zoom:8,
       center: L.latLng(43, -8),
-      url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       geosearchOptions: { // Important part Here
         provider: new OpenStreetMapProvider(),
@@ -118,6 +118,8 @@ export default {
   .modal-dialog {
     width: 90vw !important;
     height: 90vh !important;
+    max-height: 100%;
+    max-width: 100%;
   }
 
 </style>
@@ -128,6 +130,11 @@ export default {
         "title": "Cambiar Localización",
         "explicacion": "Para cambiar a localización fai click no mapa. O punteiro azul marca a localización actual da aplicación. Tamén podes empregar a barra de busca para procurar algunhas rúas. Unha vez atopada a posición que queres preme no mapa para marcala.",
         "search-label": "Introduza enderezo"
+    },
+    "es": {
+        "title": "Cambiar Localización",
+        "explicacion": "Para cambiar la localización haz click en el mapa. El puntero azul marca a localización actual de la aplicación. También puedes usar a barra de busqueda para encontrar algunhas calles. Una vez encontrada la posición que quieres, haz click en el mapa para marcala.",
+        "search-label": "Introduzca dirección"
     }
   }
 </i18n>
