@@ -4,7 +4,7 @@
             <header>
                 <h3 class="name">{{centro.nome}}</h3>
                 <h5 class="city">{{centro.concello}}, {{centro.provincia}}</h5>
-            </header>
+              </header>
             <div class="travel-info">
                 <span class="title">{{ $t('info-travel') }}</span>
                 <span class="distancia"><i class="fas fa-route"></i>{{prettyDistance}}</span>
@@ -26,7 +26,12 @@
             <dl>
               <div class="">
                 <dt>{{ $t('enderezo') }}</dt>
-                <dd>{{centro.enderezo}}</dd>
+                <dd>{{centro.enderezo}}
+                  <a  target="_blank"
+                      :href="'http://www.openstreetmap.org/?mlat=' + centro.coordenadas.lat + '&mlon=' + centro.coordenadas.lon + '&zoom=17'">
+                    <i class="fa fa-map-marker-alt"></i>
+                  </a>
+                </dd>
 
               </div>
                 <div v-if="centro.web.length > 0">
