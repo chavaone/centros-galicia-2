@@ -14,11 +14,10 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <div class="centerList">
-          <p>{{centersString}}</p>
-          </div>
-          <button type="button" name="button" v-clipboard:copy="centersString">Copiar a portapapeles</button>
+          <p v-html="$t('explicacion-1')"></p>
+          <code class="codigos">{{centersString}}</code>
+          <!-- <button type="button" name="button" @click="copy">Copiar a portapapeles</button>-->
+          <p v-html="$t('explicacion-2')"></p>
         </div>
       </div>
     </div>
@@ -34,6 +33,11 @@ export default {
     centersString () {
       return this.centers.map((center) => {return center.cod;}).join(" ");
     }
+  },
+  methods: {
+    copy() {
+      //TODO
+    }
   }
 }
 
@@ -41,16 +45,17 @@ export default {
 
 <style lang="scss">
   .modal-dialog {
-    width: 75%;
-    max-width: 100vw;
-    max-height: 100vh;
+    width: 90vw !important;
+    height: 90vh !important;
 
-    .centerList {
-      width: 300px;
-      height: 50%;
+    max-height: 100%;
+    max-width: 100%;
+
+    code.codigos {
+      display: block;
+      height: 200px;
       overflow: scroll;
-      margin:auto;
-      word-wrap: break-word;
+      margin: 1em;
     }
   }
 </style>
@@ -58,7 +63,12 @@ export default {
 <i18n>
   {
     "gl": {
-
+      "explicacion-1": "No seguinte cadro podes ver os códigos de todos os centros que tiñas na lista por orde:",
+      "explicacion-2": "Para gardar esta lista e empregala, copia os códigos anteriores seleccionándoos todos e premendo <kbd>Ctrl</kbd> + <kbd>C</kbd> ou a opción de copiar pulsando o botón dereito do rato."
+    },
+    "es": {
+      "explicacion-1": "En el siguiente cuadro puedes ver los códigos de todos los centros que tenías en la lista por orden:",
+      "explicacion-2": "Para guardar esta lista y usarla, copia los códigos anteriores seleccionándolos todos y pulsando <kbd>Ctrl</kbd> + <kbd>C</kbd> o la opción de copiar pulsando el botón derecho del ratón."
     }
   }
 </i18n>
