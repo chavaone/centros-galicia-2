@@ -160,7 +160,7 @@ export default {
 
     var dbScript = document.createElement("script");
     dbScript.onload = this.dbLoaded;
-    dbScript.src="/static/db.js";
+    dbScript.src="/static/db.min.js";
     document.getElementById("app").appendChild(dbScript);
   }
 }
