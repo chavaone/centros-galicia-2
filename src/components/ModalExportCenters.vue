@@ -15,7 +15,7 @@
         </div>
         <div class="modal-body">
           <p v-html="$t('explicacion-1')"></p>
-          <code class="codigos">{{centersString}}</code>
+          <code class="codigos" @copy="onCopy()">{{centersString}}</code>
           <!-- <button type="button" name="button" @click="copy">Copiar a portapapeles</button>-->
           <p v-html="$t('explicacion-2')"></p>
         </div>
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import galite from 'ga-lite'
 export default {
   props: {
     centers: Array
@@ -37,6 +38,9 @@ export default {
   methods: {
     copy() {
       //TODO
+    },
+    onCopy() {
+      galite('send', 'event', 'export', 'copyCodes');
     }
   }
 }
