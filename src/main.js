@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import VueClipboard from 'vue-clipboard2'
+import Meta from 'vue-meta';
 
 //Setup i18n
 Vue.use(VueI18n)
@@ -20,6 +21,9 @@ Object.defineProperty(Vue.prototype, '$locale', {
 
 Vue.use(VueClipboard)
 
+//Setup metadata SEO
+Vue.use(Meta);
+
 import './assets/scripts/imports.js'
 
 export const eventBus = new Vue()
@@ -27,5 +31,9 @@ export const eventBus = new Vue()
 import App from './App.vue'
 new Vue({
   i18n,
-  render: h => h(App)
+  render: h => h(App),
+  mounted () {
+      // You'll need this for renderAfterDocumentEvent.
+      document.dispatchEvent(new Event('render-event'))
+    }
 }).$mount('#app')

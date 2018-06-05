@@ -55,6 +55,7 @@
 <script>
 import { eventBus } from './main.js'
 import OSMFunctions from './assets/scripts/OSMFunctions.js'
+import MetaData from './assets/scripts/MetaDataValues.js'
 
 //Components
 import Draggable from 'vuedraggable'
@@ -65,7 +66,7 @@ import SortList from './components/sort/SortList.vue'
 import Trash from './components/Trash.vue'
 
 export default {
-  name: 'app',
+  metaInfo: MetaData,
   data () {
     return {
       centers: [],

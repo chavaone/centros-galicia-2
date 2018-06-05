@@ -1,5 +1,9 @@
 var path = require('path')
 var webpack = require('webpack')
+var PrerenderSPAPlugin = require('prerender-spa-plugin')
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
+
+
 
 module.exports = {
   entry: './src/main.js',
@@ -108,6 +112,25 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
+    }),
+
+    // == PRERENDER SPA PLUGIN == //
+    new PrerenderSPAPlugin({
+      // Index.html is in the root directory.
+      staticDir: path.join(__dirname),
+      routes: [ '/' ],
+      outputDir: path.join(__dirname, 'prerendered'),
+      // Optional minification.
+      minify: {
+        collapseBooleanAttributes: true,
+        collapseWhitespace: true,
+        decodeEntities: true,
+        keepClosingSlash: true,
+        sortAttributes: true
+      },
+      renderer: new Renderer({
+        renderAfterDocumentEvent: 'render-event'
+      })
     })
   ])
 }
