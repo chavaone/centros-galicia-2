@@ -19,6 +19,11 @@
                           {{ $t('export-center') }}
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#aboutModal">
+                          {{ $t('about') }}
+                        </a>
+                    </li>
                     <AQDLanguageSelector></AQDLanguageSelector>
                 </ul>
 
@@ -26,6 +31,7 @@
     </nav>
     <AQDModalChangePosition :position="position"></AQDModalChangePosition>
     <AQDModalExportCenters :centers="activeCenters"></AQDModalExportCenters>
+    <AQDAboutModal></AQDAboutModal>
   </div>
 </template>
 
@@ -33,6 +39,7 @@
 import ModalChangePosition from './ModalChangePosition.vue'
 import ModalExportCenters from './ModalExportCenters.vue'
 import LanguageSelector from './LanguageSelector.vue'
+import ModalAbout from './ModalAbout.vue'
 
 import { eventBus } from '../main.js';
 
@@ -45,7 +52,8 @@ export default {
   components: {
     'AQDModalChangePosition': ModalChangePosition,
     'AQDModalExportCenters': ModalExportCenters,
-    'AQDLanguageSelector': LanguageSelector
+    'AQDLanguageSelector': LanguageSelector,
+    'AQDAboutModal': ModalAbout
   },
   methods: {
     positionModalEnabled() {
@@ -63,11 +71,13 @@ export default {
   {
     "gl": {
       "change-coords": "Cambiar Localización",
-      "export-center": "Exportar Centros"
+      "export-center": "Exportar Centros",
+      "about": "Sobre"
     },
     "es": {
       "change-coords": "Cambiar Localización",
-      "export-center": "Exportar Centros"
+      "export-center": "Exportar Centros",
+      "about": "Sobre"
     }
   }
 </i18n>
