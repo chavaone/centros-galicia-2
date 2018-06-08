@@ -50,5 +50,13 @@ div.filterList {
     span.active {
       background: $selected-color;
     }
+
+    &.action-buttons {
+      margin-top: 1em;
+      span {
+        background: $action-color;
+        font-weight: normal;
+      }
+    }
   }
 }

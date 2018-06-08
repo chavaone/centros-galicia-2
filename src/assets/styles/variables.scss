@@ -3,3 +3,4 @@ $background-color: #f5f8fa;
 
 $unselected-color: darken(#007bff, 5%);
 $selected-color: lighten($unselected-color, 10%);
+$action-color: lighten($unselected-color, 10%);

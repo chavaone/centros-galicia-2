@@ -1,11 +1,17 @@
 <template lang="html">
   <div class="filter">
     <h5>{{ $t('studiestype') }}</h5>
-    <div class="filterList">
-      <span v-for="tipo in tiposDeEstudios"
-            :class="{active: checkedTiposDeEstudios.indexOf(tipo.cod) != -1}"
-            @click="addOrDeleteEstudio(tipo.cod)"
-            v-t="tipo.nombre"></span>
+    <div class="">
+      <div class="filterList">
+        <span v-for="tipo in tiposDeEstudios"
+              :class="{active: checkedTiposDeEstudios.indexOf(tipo.cod) != -1}"
+              @click="addOrDeleteEstudio(tipo.cod)"
+              v-t="tipo.nombre"></span>
+      </div>
+      <div class="filterList action-buttons">
+        <span @click="disableAll();">{{ $t('disable-all') }}</span>
+        <span @click="enableAll();">{{ $t('enable-all') }}</span>
+      </div>
     </div>
     <div class="no-flex-fallback">
       <div class="form-check"
@@ -109,6 +115,14 @@ export default {
         this.checkedTiposDeEstudios.splice(index, 1);
       }
       eventBus.$emit('filterOrSortChanged', 'filterTipoDeEstudios');
+    },
+    enableAll() {
+      this.checkedTiposDeEstudios = this.tiposDeEstudios.map((c)=>{return c.cod;});
+      eventBus.$emit('filterOrSortChanged', 'filterTipoDeEstudios');
+    },
+    disableAll() {
+      this.checkedTiposDeEstudios = [];
+      eventBus.$emit('filterOrSortChanged', 'filterTipoDeEstudios');
     }
   },
   created(){
@@ -135,7 +149,9 @@ export default {
       "musica": "Música",
       "art-des": "Arte e Deseño",
       "idiomas": "Idiomas",
-      "dramatico": "Arte Dramático"
+      "dramatico": "Arte Dramático",
+      "disable-all": "Desactivar todas",
+      "enable-all": "Activar todas"
     },
     "es": {
       "studiestype": "Estudios:",
@@ -150,7 +166,9 @@ export default {
       "musica": "Música",
       "art-des": "Arte y Diseño",
       "idiomas": "Idiomas",
-      "dramatico": "Arte Dramático"
+      "dramatico": "Arte Dramático",
+      "disable-all": "Desactivar todas",
+      "enable-all": "Activar todas"
     }
   }
 </i18n>

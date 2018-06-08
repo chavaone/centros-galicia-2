@@ -1,10 +1,16 @@
 <template lang="html">
   <div class="filter">
     <h5>{{ $t('centertype') }}</h5>
-    <div class="filterList">
-      <span v-for="tipo in tiposdecentro"
-            :class="{active: checkedTiposdecentro.indexOf(tipo) != -1}"
-            @click="addOrDeleteTipoDeCentro(tipo)">{{tipo}}</span>
+    <div class="">
+      <div class="filterList">
+        <span v-for="tipo in tiposdecentro"
+              :class="{active: checkedTiposdecentro.indexOf(tipo) != -1}"
+              @click="addOrDeleteTipoDeCentro(tipo)">{{tipo}}</span>
+      </div>
+      <div class="filterList action-buttons">
+        <span @click="disableAll();">{{ $t('disable-all') }}</span>
+        <span @click="enableAll();">{{ $t('enable-all') }}</span>
+      </div>
     </div>
     <div class="no-flex-fallback">
       <div class="form-check"
@@ -42,7 +48,8 @@ export default {
         'CFEA',
         'CMUS',
         'EASD',
-        'ESAD'
+        'ESAD',
+        'CDAN'
       ],
       checkedTiposdecentro: [
         'IES',
@@ -57,7 +64,8 @@ export default {
         'CFEA',
         'CMUS',
         'EASD',
-        'ESAD'
+        'ESAD',
+        'CDAN'
       ]
     };
   },
@@ -80,6 +88,14 @@ export default {
         this.checkedTiposdecentro.splice(index, 1);
       }
       eventBus.$emit('filterOrSortChanged', 'filterTipoCentro');
+    },
+    enableAll() {
+      this.checkedTiposdecentro = this.tiposdecentro.slice(0);
+      eventBus.$emit('filterOrSortChanged', 'filterTipoCentro');
+    },
+    disableAll() {
+      this.checkedTiposdecentro = [];
+      eventBus.$emit('filterOrSortChanged', 'filterTipoCentro');
     }
   }
 }
@@ -91,10 +107,14 @@ export default {
 <i18n>
   {
     "gl": {
-      "centertype": "Tipos de Centro:"
+      "centertype": "Tipos de Centro:",
+      "disable-all": "Desactivar todas",
+      "enable-all": "Activar todas"
     },
     "es": {
-      "centertype": "Tipos de Centro:"
+      "centertype": "Tipos de Centro:",
+      "disable-all": "Desactivar todas",
+      "enable-all": "Activar todas"
     }
   }
 </i18n>
