@@ -56,6 +56,7 @@
 import { eventBus } from './main.js'
 import OSMFunctions from './assets/scripts/OSMFunctions.js'
 import MetaData from './assets/scripts/MetaDataValues.js'
+import Config from './config.js'
 
 //Components
 import Draggable from 'vuedraggable'
@@ -87,7 +88,7 @@ export default {
   },
   computed: {
     totalPages() {
-      return Math.ceil(this.resultCount / this.itemsPerPage);
+      return Math.ceil(this.resultCount / Config.centersPerPage);
     },
     paginatedActiveCenters() {
       this.resultCount = this.activeCenters.length;
@@ -96,9 +97,9 @@ export default {
         this.currentPage = Math.max(0, this.totalPages - 1);
       }
 
-      var index = this.currentPage * this.itemsPerPage;
+      var index = this.currentPage * Config.centersPerPage;
 
-      return this.activeCenters.slice(index, index + this.itemsPerPage);
+      return this.activeCenters.slice(index, index + Config.centersPerPage);
     }
   },
   components: {
