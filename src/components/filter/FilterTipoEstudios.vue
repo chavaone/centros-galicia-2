@@ -82,6 +82,10 @@ export default {
           cod: "idiomas"
         },
         {
+          nombre: 'danza',
+          cod: 'danza'
+        },
+        {
           nombre: 'dramatico',
           cod: "sup-drama"
         }
@@ -116,6 +120,7 @@ export default {
       }
       eventBus.$emit('filterOrSortChanged', 'filterTipoDeEstudios');
     },
+
     enableAll() {
       this.checkedTiposDeEstudios = this.tiposDeEstudios.map((c)=>{return c.cod;});
       eventBus.$emit('filterOrSortChanged', 'filterTipoDeEstudios');
@@ -150,6 +155,7 @@ export default {
       "art-des": "Arte e Deseño",
       "idiomas": "Idiomas",
       "dramatico": "Arte Dramático",
+      "danza": "Danza",
       "disable-all": "Desactivar todas",
       "enable-all": "Activar todas"
     },
@@ -167,6 +173,7 @@ export default {
       "art-des": "Arte y Diseño",
       "idiomas": "Idiomas",
       "dramatico": "Arte Dramático",
+      "danza": "Danza",
       "disable-all": "Desactivar todas",
       "enable-all": "Activar todas"
     }
