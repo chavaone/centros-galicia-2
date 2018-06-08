@@ -135,6 +135,14 @@ article {
       flex: 1 1 50px;
       display: flex;
       justify-content: center;
+      .btn { font-size: 1.25em;}
+
+  }
+
+  @media (min-width: 760px) {
+    .botones {
+      .btn { font-size: 1em;}
+    }
   }
 
   .info {
