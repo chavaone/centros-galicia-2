@@ -72,12 +72,12 @@ export default {
     "gl": {
       "change-coords": "Cambiar Localización",
       "export-center": "Exportar Centros",
-      "about": "Sobre"
+      "about": "Axuda e Contacto"
     },
     "es": {
       "change-coords": "Cambiar Localización",
       "export-center": "Exportar Centros",
-      "about": "Sobre"
+      "about": "Ayuda y Contacto"
     }
   }
 </i18n>
