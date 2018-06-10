@@ -55,7 +55,7 @@
                   <dd>{{ centro.xornada.inf }}</dd>
                 </div>
                 <div v-if="centro.xornada.prim">
-                  <dt> {{$t('xornada-inf')}}</dt>
+                  <dt> {{$t('xornada-prim')}}</dt>
                   <dd>{{ centro.xornada.prim }}</dd>
                 </div>
                 <div v-if="centro.ensinanzas.bac">
