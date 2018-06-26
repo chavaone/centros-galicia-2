@@ -15,7 +15,7 @@
         </div>
         <div class="modal-body">
           <p v-html="$t('licencia-codigo', {url:'https://github.com/chavaone/centros-galicia-2'})"></p>
-          <p v-html="$t('desarrollador', {email: 'marcos.chavarria [at] edu.xunta [dot] es'})"></p>
+          <p v-html="$t('desarrollador', {email: 'contacto [arroba] centroseducativos [punto] gal'})"></p>
           <img src="/static/agpl.png" alt="AGPL" height="51">
           <p v-html="$t('videotitorial')"></p>
           <video width="90%" src="/static/videotitorial.webm" controls>
