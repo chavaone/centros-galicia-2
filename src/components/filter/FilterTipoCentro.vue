@@ -49,7 +49,8 @@ export default {
         'CMUS',
         'EASD',
         'ESAD',
-        'CDAN'
+        'CDAN',
+        'EOI'
       ],
       checkedTiposdecentro: [
         'IES',
@@ -65,7 +66,8 @@ export default {
         'CMUS',
         'EASD',
         'ESAD',
-        'CDAN'
+        'CDAN',
+        'EOI'
       ]
     };
   },
