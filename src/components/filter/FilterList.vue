@@ -9,6 +9,7 @@
 import FilterProvincia from './FilterProvincia.vue'
 import FilterTipoCentro from './FilterTipoCentro.vue'
 import FilterTipoEstudios from './FilterTipoEstudios.vue'
+import FilterDistancia from './FilterDistancia.vue'
 
 export default {
   data() {
@@ -16,14 +17,16 @@ export default {
       activeFilters: [
         'AQDFilterProvincia',
         'AQDFilterTipoCentro',
-        'AQDFilterTipoEstudios'
+        'AQDFilterTipoEstudios',
+        'AQDFilterDistancia'
       ]
     };
   },
   components: {
     'AQDFilterProvincia': FilterProvincia,
     'AQDFilterTipoCentro': FilterTipoCentro,
-    'AQDFilterTipoEstudios': FilterTipoEstudios
+    'AQDFilterTipoEstudios': FilterTipoEstudios,
+    'AQDFilterDistancia': FilterDistancia
   },
   methods: {
     filter (centers) {

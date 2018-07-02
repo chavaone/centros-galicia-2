@@ -113,13 +113,10 @@ export default {
   methods: {
     loadCenters(origin) {
 
-      if (origin.startsWith("filter")) {
-        this.activeCenters = this.centers;
-        this.activeCenters = this.$refs.filterList.filter(this.activeCenters);
-      } else if (origin.startsWith("sort")) {
+      if (origin.startsWith("sort")) {
         this.activeCenters = this.$refs[origin].sort(this.activeCenters);
       } else {
-        this.activeCenters = this.centers;
+        this.activeCenters = this.$refs.filterList.filter(this.centers);
         this.activeCenters = this.activeCenters.filter(this.$refs.trash.filter);
       }
     },
