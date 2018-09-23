@@ -27294,5 +27294,67 @@ var raw_centers_db = [
 	},
 	concello: "Muxía",
 	cod: 15009676
+},
+{
+  coordenadas:{
+    lat:43.312283,
+    lon:-8.376285
+  },
+  ensinanzas:{
+    inf:{
+
+    },
+    prim:{
+
+    }
+  },
+  cp:15174,
+  enderezo:"Avenida de Rutis s/n",
+  web:"",
+  provincia:"A Coruña",
+  nome:"CEIP de Culleredo",
+  servizos:[
+
+  ],
+  tlf:"",
+  xornada:{
+    inf:"partida",
+    prim:"partida"
+  },
+  concello:"Culleredo",
+  cod:15033149
+},
+{
+  coordenadas:{
+    lat:42.33766,
+    lon:-8.573996
+  },
+  ensinanzas:{
+    eso:{
+
+    },
+    bac:{
+      "humanidades":[
+
+      ],
+      "ciencias":[
+
+      ]
+    }
+  },
+  cp:36690,
+  enderezo:"Estrada Provincial s/n",
+  web:"",
+  provincia:"Pontevedra",
+  nome:"IES de Soutomaior",
+  servizos:[
+    "transporte"
+  ],
+  tlf:"",
+  xornada:{
+
+  },
+  concello:"Soutomaior",
+  cod:36024987
 }
 ];
