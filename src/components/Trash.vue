@@ -50,7 +50,6 @@ export default {
       } else {
         this.trashedCentros.splice(index, 1);
       }
-      eventBus.$emit('filterOrSortChanged', 'trash');
     },
     filter (center) {
       return this.trashedCentros.indexOf(center) == -1;

@@ -1,5 +1,5 @@
 <template lang="html">
-  <article :data-cod="centro.cod">
+  <article :data-cod="centro.cod" :class="{trashed: centro.trashed}">
         <div class="info">
             <header>
                 <h3 class="name">{{centro.nome}}</h3>
@@ -115,6 +115,7 @@ export default {
   },
   methods: {
     trash(){
+      this.centro.trashed = ! this.centro.trashed;
       eventBus.$emit('trashcenter', this.centro);
     }
   }
@@ -215,6 +216,10 @@ article {
     }
   }
 
+}
+
+.mainCenterList article.trashed {
+  display:none;
 }
 </style>
 

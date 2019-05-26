@@ -15,7 +15,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#cambiarExportarCentros">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#cambiarExportarCentros" :class="{disabled: activeCenters.length == 0}">
                           {{ $t('export-center') }}
                         </a>
                     </li>

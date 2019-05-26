@@ -1,16 +1,9 @@
 <template>
   <div id="app" class="container">
-    <div class="alert alert-primary" role="alert" v-if="! loadedDistances">
-      {{ $t('loading-distances') }}
-    </div>
-    <div class="alert alert-primary" role="alert" v-if="! loadedTimes">
-      {{ $t('loading-times') }}
-    </div>
     <header>
       <AQDMainHeaderBar :position="position" :activeCenters="activeCenters"></AQDMainHeaderBar>
       <nav class="barra">
         <span class="info">{{ $t('number-centers', [currentPage + 1, totalPages, activeCenters.length]) }}</span>
-        <AQDSortControl ref="sortBar" :sortRef="'sortBar'" :showTitle="false" id="sortBar"></AQDSortControl>
         <span class="boton">
           <a class="btn btn-primary" data-toggle="collapse" href="#asideSortFilter" role="button" aria-expanded="false" aria-controls="asideSortFilter">Filtros</a>
         </span>
@@ -20,14 +13,14 @@
     <main>
       <aside class="collapse" id="asideSortFilter">
         <form>
-          <AQDSortControl ref="sortAside" :sortRef="'sortAside'"></AQDSortControl>
+          <AQDSortControl ref="sortList"></AQDSortControl>
           <AQDFilterList ref="filterList"></AQDFilterList>
         </form>
       </aside>
-      <AQDDraggable v-model="activeCenters" @change="setCustomSort()" :options="sortableoptions">
+      <AQDDraggable v-if="activeCenters.length > 0"  v-model="activeCenters" @change="setCustomSort()" :options="sortableoptions" class="mainCenterList">
           <AQDCenter v-for="centro in paginatedActiveCenters" :centro="centro" :key="centro.cod"></AQDCenter>
       </AQDDraggable>
-      <nav class="center-pagination">
+      <nav class="center-pagination" v-if="activeCenters.length > 0">
         <ul class="pagination">
           <li class="page-item"
               :class="{disabled: currentPage == 0}">
@@ -45,6 +38,7 @@
           </li>
         </ul>
       </nav>
+      <AQDLandingMessage v-if="activeCenters.length == 0" :loadedDistances="loadedDistances" :loadedTimes="loadedTimes"></AQDLandingMessage>
     </main>
     <footer>
 
@@ -65,12 +59,12 @@ import MainHeaderBar from './components/MainHeaderBar.vue'
 import FilterList from './components/filter/FilterList.vue'
 import SortList from './components/sort/SortList.vue'
 import Trash from './components/Trash.vue'
+import LandingMessage from './components/LandingMessage.vue'
 
 export default {
   metaInfo: MetaData,
   data () {
     return {
-      centers: [],
       activeCenters: [],
       position: {
         'lat': 43,
@@ -79,7 +73,6 @@ export default {
       loadedDistances: false,
       loadedTimes: false,
       currentPage: 0,
-      itemsPerPage: 100,
       resultCount: 0,
       sortableoptions: {
         handle: 'h3.name',
@@ -108,17 +101,17 @@ export default {
     'AQDFilterList': FilterList,
     'AQDMainHeaderBar': MainHeaderBar,
     'AQDSortControl': SortList,
-    'AQDTrash': Trash
+    'AQDTrash': Trash,
+    'AQDLandingMessage': LandingMessage
   },
   methods: {
-    loadCenters(origin) {
+    loadCenters() {
+      var showCenters =  raw_centers_db;
+      showCenters = this.$refs.filterList.filter(showCenters);
+      showCenters = showCenters.filter(this.$refs.trash.filter);
+      showCenters = this.$refs.sortList.sort(showCenters);
 
-      if (origin.startsWith("sort")) {
-        this.activeCenters = this.$refs[origin].sort(this.activeCenters);
-      } else {
-        this.activeCenters = this.$refs.filterList.filter(this.centers);
-        this.activeCenters = this.activeCenters.filter(this.$refs.trash.filter);
-      }
+      this.activeCenters = showCenters;
     },
     getLocation() {
       var self = this;
@@ -135,27 +128,34 @@ export default {
       this.loadedDistances = false;
       var self = this;
 
-      OSMFunctions.updateOSMTimes(this.centers, position, function () {
+      OSMFunctions.updateOSMTimes(raw_centers_db, position, function () {
         self.loadedTimes = true;
       });
 
-      OSMFunctions.updateOSMDistances(this.centers, position, function () {
+      OSMFunctions.updateOSMDistances(raw_centers_db, position, function () {
         self.loadedDistances = true;
       });
     },
     setCustomSort() {
-      this.$refs.sortAside.setCustomSort();
-      this.$refs.sortBar.setCustomSort();
+      this.$refs.sortList.setCustomSort();
     },
     dbLoaded() {
-      this.centers = raw_centers_db;
-      this.activeCenters = this.centers;
+      //We add trashed field so this field is 'reactified'.
+      raw_centers_db.forEach(function(center){
+        center.trashed = false;
+      });
       this.getLocation();
+    },
+    resetCenters() {
+      this.activeCenters = [];
     }
   },
   created() {
-    eventBus.$on('filterOrSortChanged', this.loadCenters);
-    eventBus.$on('locationChanged', this.updateOSMData)
+    eventBus.$on('locationChanged', this.updateOSMData);
+    eventBus.$on('locationChanged', this.resetCenters);
+    eventBus.$on('filterOrSortChanged', this.resetCenters);
+    eventBus.$on('loadCenters', this.loadCenters);
+
 
     var dbScript = document.createElement("script");
     dbScript.onload = this.dbLoaded;
@@ -191,10 +191,6 @@ export default {
       flex: 1;
     }
 
-    #sortBar {
-      display: none;
-    }
-
     @include media-breakpoint-up(md) {
       .boton {
         display:none;
@@ -226,12 +222,6 @@ export default {
 
     aside>form {
         @include make-box;
-
-        @include media-breakpoint-up(md) {
-            #sort-list {
-              display: none;
-            }
-        }
     }
 
     &>div,
@@ -262,15 +252,11 @@ export default {
   {
     "gl": {
       "number-centers": "Amosando a páxina {0} de {1} para un total de {2} centros",
-      "loading-times": "Estamos cargando os tempos dende a súa localización a cada centro. Espere por favor.",
-      "loading-distances": "Estamos cargando as distancias dende a súa localización a cada centro. Espere por favor.",
       "seguinte": "Seguinte",
       "anterior": "Anterior"
     },
     "es": {
       "number-centers": "Mostrando la página {0} de {1} para un total de {2} centros",
-      "loading-times": "Estamos cargando los tiempos de viaje desde su localización a cada centro. Espere por favor.",
-      "loading-distances": "Estamos cargando la distancia desde su localización a cada centro. Espere por favor.",
       "seguinte": "Siguiente",
       "anterior": "Anterior"
     }

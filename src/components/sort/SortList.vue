@@ -59,9 +59,9 @@ export default {
       return centros.sort(this.selectedMethod.fun);
     },
     changeSort(method){
-      this.selectedMethod = method;
       this.customSelected = false;
-      eventBus.$emit('filterOrSortChanged', this.sortRef);
+      this.selectedMethod = method;
+      eventBus.$emit('filterOrSortChanged');
     },
     setCustomSort() {
       this.customSelected = true;
