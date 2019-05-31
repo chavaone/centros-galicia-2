@@ -3,6 +3,9 @@ node_modules/
 dist/
 npm-debug.log
 yarn-error.log
+prerendered/
+package-lock.json
+yarn.lock
 
 # Editor directories and files
 .idea
