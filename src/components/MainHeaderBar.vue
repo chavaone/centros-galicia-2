@@ -20,11 +20,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#settingsModal">
+                          {{ $t('settings') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#" data-toggle="modal" data-target="#aboutModal">
                           {{ $t('about') }}
                         </a>
                     </li>
-                    <AQDLanguageSelector></AQDLanguageSelector>
                 </ul>
 
               </div>
@@ -32,14 +36,16 @@
     <AQDModalChangePosition :position="position"></AQDModalChangePosition>
     <AQDModalExportCenters :centers="activeCenters"></AQDModalExportCenters>
     <AQDAboutModal></AQDAboutModal>
+    <AQDModalSettings></AQDModalSettings>
   </div>
 </template>
 
 <script>
 import ModalChangePosition from './ModalChangePosition.vue'
 import ModalExportCenters from './ModalExportCenters.vue'
-import LanguageSelector from './LanguageSelector.vue'
 import ModalAbout from './ModalAbout.vue'
+import ModalSettings from './ModalSettings.vue'
+
 
 import { eventBus } from '../main.js';
 
@@ -52,7 +58,7 @@ export default {
   components: {
     'AQDModalChangePosition': ModalChangePosition,
     'AQDModalExportCenters': ModalExportCenters,
-    'AQDLanguageSelector': LanguageSelector,
+    'AQDModalSettings': ModalSettings,
     'AQDAboutModal': ModalAbout
   },
   methods: {
@@ -72,12 +78,14 @@ export default {
     "gl": {
       "change-coords": "Cambiar Localización",
       "export-center": "Exportar Centros",
-      "about": "Axuda e Contacto"
+      "about": "Axuda e Contacto",
+      "settings": "Preferencias"
     },
     "es": {
       "change-coords": "Cambiar Localización",
       "export-center": "Exportar Centros",
-      "about": "Ayuda y Contacto"
+      "about": "Ayuda y Contacto",
+      "settings": "Preferencias"
     }
   }
 </i18n>
