@@ -6,9 +6,47 @@
                 <h5 class="city">{{centro.concello}}, {{centro.provincia}}</h5>
               </header>
             <div class="travel-info">
-                <span class="title">{{ $t('info-travel') }}</span>
-                <span class="distancia"><i class="fas fa-route"></i>{{prettyDistance}}</span>
-                <span class="tiempo"><i class="fas fa-clock"></i>{{prettyTime}}</span>
+                <span class="travel-info__title">{{ $t('info-travel') }}</span>
+
+                <div class="travel-info__content">
+
+                  <span class="travel-info__item">
+                    <img class="svg-inline--fa fa-w-16" src="/static/route.svg"/>
+                    {{prettyDistance}}
+                    <span class="travel-info__itemmore" v-if="routeData.cat1">
+                      <span v-if="routeData.cat1 && (routeData.cat1.distancia > 500 || (centro.osm.details.distance < 1000 && routeData.cat1.distancia > 0))">
+                        <span class="cat-icon cat-icon--1">1</span>{{ beautifyDistance(routeData.cat1.distancia/1000)}}
+                      </span>
+                      <span v-if="routeData.cat2 && (routeData.cat2.distancia > 500 || (centro.osm.details.distance < 1000 && routeData.cat2.distancia > 0))">
+                        <span class="cat-icon cat-icon--2">2</span>{{ beautifyDistance(routeData.cat2.distancia/1000)}}
+                      </span>
+                      <span v-if="routeData.cat3 && (routeData.cat3.distancia > 500 || (centro.osm.details.distance < 1000 && routeData.cat3.distancia > 0))">
+                        <span class="cat-icon cat-icon--3">3</span>{{ beautifyDistance(routeData.cat3.distancia/1000)}}
+                      </span>
+                    </span>
+                  </span>
+
+                  <span class="travel-info__item">
+                    <i class="fas fa-clock"></i>
+                    {{prettyTime}}
+                    <span class="travel-info__itemmore" v-if="routeData.cat1">
+                      <span v-if="routeData.cat1 && (routeData.cat1.tiempo > 120 || (centro.osm.details.duration < 900 && routeData.cat1.tiempo > 0))">
+                        <span class="cat-icon cat-icon--1">1</span><span>{{ beautifyTime(routeData.cat1.tiempo)}}</span>
+                      </span>
+                      <span v-if="routeData.cat2 && (routeData.cat2.tiempo > 120 || (centro.osm.details.duration < 900 && routeData.cat2.tiempo > 0))">
+                        <span class="cat-icon cat-icon--2">2</span><span>{{ beautifyTime(routeData.cat2.tiempo)}}</span>
+                      </span>
+                      <span v-if="routeData.cat3 && (routeData.cat3.tiempo > 120 || (centro.osm.details.duration < 900 && routeData.cat3.tiempo > 0))">
+                        <span class="cat-icon cat-icon--3">3</span><span>{{ beautifyTime(routeData.cat3.tiempo)}}</span>
+                      </span>
+                    </span>
+                  </span>
+
+                  <span class="travel-info__item" v-if="centro.osm.details">
+                    <i class="fas fa-road"></i>
+                    {{centro.osm.details.legs[0].summary}}
+                  </span>
+                </div>
             </div>
         </div>
         <div class="botones">
@@ -19,6 +57,7 @@
                       <i class="fa fa-clipboard"></i>
               </button>
               <button type="button" class="btn btn-sm btn-primary" @click="trash()"><i class="fa fa-trash"></i></button>
+              <button type="button" class="btn btn-xs btn-primary" @click="getOSMDetails()" :class="{disabled: detailsCounter}"><i class="fas fa-map-signs"></i></button>
               <button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" :data-target="'#info-cen-' + centro.cod" aria-expanded="false" :aria-controls="'info-cen-' + centro.cod"><i class="fa fa-info"></i></button>
             </div>
         </div>
@@ -72,37 +111,47 @@ import { eventBus } from '../main.js'
 
 export default {
   props: {
-    centro: Object
+    centro: Object,
+    detailsCounter: Date
   },
   computed: {
     prettyDistance() {
       if (! this.centro.osm) return "---";
       var distance = this.centro.osm.distancia;
-      if (distance < 1) {
-          return (Math.floor(distance * 1000)).toString() + " m.";
-      }
-      return Math.floor(distance).toString() + " km.";
+      if (this.centro.osm.details) distance = this.centro.osm.details.distance/1000;
+      return this.beautifyDistance(distance);
     },
     prettyTime () {
       if (! this.centro.osm) return "---";
       var seconds = this.centro.osm.tiempo;
-      var ret = "",
-          secondsInt = Math.floor(seconds),
-          hours = Math.floor(secondsInt / 3600),
-          minutes = Math.floor((secondsInt % 3600) / 60),
-          secs = (secondsInt % 3600) % 60;
+      if (this.centro.osm.details) seconds = this.centro.osm.details.duration;
+      return this.beautifyTime(seconds);
+    },
+    routeData() {
+      if (! this.centro.osm.details) return {};
 
-          if (hours) {
-              ret = hours.toString() + "h. ";
-          }
+      var ret = {},
+          steps = this.centro.osm.details.legs[0].steps.map(
+            function(step) {
+              return {
+                distancia: step.distance,
+                tiempo: step.duration,
+                speed: step.distance / step.duration,
+                ref: step.ref
+              };
+            });
 
-          if (minutes) {
-              ret = ret + minutes.toString() + "min. ";
-          }
+      //CAT1 Autovías -> ref empeza por A
+      var stepscat1 = steps.filter((step) => (step.ref && step.ref.startsWith('A')));
+      ret.cat1 = this.reduceSteps(stepscat1);
 
-          if (secondsInt && ! ret) {
-              ret = ret + secs.toString() + "s. ";
-          }
+      //CAT2 Non autovías e velocidade superior a 20m/s ~ 72Km/h
+      var stepscat2 = steps.filter((step) => (! (step.ref && step.ref.startsWith('A')) && step.speed >= 20));
+      ret.cat2 = this.reduceSteps(stepscat2);
+
+      //CAT3 O Resto
+      var stepscat3 = steps.filter((step) => (! (step.ref && step.ref.startsWith('A')) && step.speed < 20));
+      ret.cat3 = this.reduceSteps(stepscat3);
 
       return ret;
     }
@@ -117,6 +166,40 @@ export default {
     trash(){
       this.centro.trashed = ! this.centro.trashed;
       eventBus.$emit('trashcenter', this.centro);
+    },
+    getOSMDetails() {
+      eventBus.$emit('centerdetails', this.centro);
+    },
+    beautifyDistance(distance) {
+      if (distance < 1) {
+          return (Math.floor(distance * 1000)).toString() + "m.";
+      }
+      return Math.floor(distance).toString() + "km.";
+    },
+    beautifyTime (seconds) {
+      var ret = "",
+          secondsInt = Math.floor(seconds),
+          hours = Math.floor(secondsInt / 3600),
+          minutes = Math.floor((secondsInt % 3600) / 60),
+          secs = (secondsInt % 3600) % 60;
+
+          if (hours) {
+              ret = hours.toString() + "h.";
+          }
+
+          if (minutes) {
+              ret = ret + minutes.toString() + "min.";
+          }
+
+          if (secondsInt && ! ret) {
+              ret = ret + secs.toString() + "s.";
+          }
+
+      return ret;
+    },
+    reduceSteps (steps) {
+      if (steps.length == 0) return {distancia: 0, tiempo: 0};
+      return steps.reduce((step1, step2) => ({distancia: step1.distancia + step2.distancia, tiempo: step1.tiempo + step2.tiempo}));
     }
   }
 }
@@ -170,18 +253,47 @@ article {
       .travel-info {
         padding-left: 1em;
 
-        .title {
+        &__title {
             font-weight: bold;
             margin-right: 0.5em;
         }
 
-        .distancia,.tiempo {
-            font-style: italic;
-
-            svg {
-                margin-right: 0.2em;
-            }
+        &__content {
+            display: inline-grid;
         }
+
+        &__item {
+          font-style: italic;
+
+          svg {
+              margin-right: 0.2em;
+          }
+        }
+
+        &__itemmore {
+          font-size:0.8em;
+        }
+      }
+
+      .cat-icon {
+        display: inline-block;
+        height: 15px;
+        width: 15px;
+
+        margin-right: 1px;
+        padding: 0;
+        padding-bottom: 1px;
+        border-radius: 100%;
+
+        text-align: center;
+        font-style: normal;
+        font-size: 0.8em;
+        font-weight: bold;
+        color: white;
+
+        &--1 {background-color: green}
+        &--2 {background-color: orange}
+        &--3 {background-color: red}
       }
   }
 

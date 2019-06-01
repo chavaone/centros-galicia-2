@@ -33,7 +33,8 @@ export default {
     $.when.apply($, ajax_calls).then(
       function() {
         for (var i = 0; i < arguments.length; i++) {
-          for(var j = 0; j < arguments[i][0].durations[0].length - 1; j++) {
+          for(var j = 0; j < arguments[i][0].durations[0].length; j++) {
+            if(! centros [i*request_max_size + j]) continue;
             if (! centros[i*request_max_size + j].osm) centros[i*request_max_size + j].osm = {};
             centros[i*request_max_size + j].osm.tiempo = arguments[i][0].durations[0][j+1];
           }
@@ -60,5 +61,25 @@ export default {
       centros[i].osm.distancia = R * 2 * Math.asin(Math.sqrt(a));
     }
     callback();
+  },
+  getOSMDetailedRouteInfo(centro, currentLocation, callback) {
+    $.ajax({
+      method: "GET",
+      url: "https://osrm.aquelando.info/route/v1/driving/" +
+            currentLocation.lon.toString() +
+            "," +
+            currentLocation.lat.toString() +
+            ";" +
+            centro.coordenadas.lon.toString()  +
+            "," +
+            centro.coordenadas.lat.toString(),
+      data: {
+        steps: true,
+        overview: false
+      }
+    }).done (function(data) {
+      centro.osm.details = data.routes[0];
+      callback();
+    })
   }
 }

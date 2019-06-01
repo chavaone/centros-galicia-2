@@ -128,6 +128,15 @@ export default {
       this.loadedDistances = false;
       var self = this;
 
+      //Reset OSM details
+      raw_centers_db.forEach(function(center){
+        center.osm = {
+          distancia: 0,
+          tiempo: 0,
+          details: null
+        };
+      });
+
       OSMFunctions.updateOSMTimes(raw_centers_db, position, function () {
         self.loadedTimes = true;
       });
@@ -143,11 +152,20 @@ export default {
       //We add trashed field so this field is 'reactified'.
       raw_centers_db.forEach(function(center){
         center.trashed = false;
+        center.osm = {
+          distancia: 0,
+          tiempo: 0,
+          details: null,
+          loading: false
+        }
       });
       this.getLocation();
     },
     resetCenters() {
       this.activeCenters = [];
+    },
+    getCenterDetails (centro) {
+      OSMFunctions.getOSMDetailedRouteInfo(centro, this.position, function () {});
     }
   },
   created() {
@@ -155,6 +173,7 @@ export default {
     eventBus.$on('locationChanged', this.resetCenters);
     eventBus.$on('filterOrSortChanged', this.resetCenters);
     eventBus.$on('loadCenters', this.loadCenters);
+    eventBus.$on('centerdetails', this.getCenterDetails);
 
 
     var dbScript = document.createElement("script");
